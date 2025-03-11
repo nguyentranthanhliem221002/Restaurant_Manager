@@ -39,10 +39,10 @@
             radioButton_option_bank = new RadioButton();
             radioButton_option_cash = new RadioButton();
             s = new Label();
-            lb_table_number = new Label();
-            label1 = new Label();
-            label2 = new Label();
             lb_total = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            lb_table_number = new Label();
             groupBox_list_table.SuspendLayout();
             groupBox_tableInfo.SuspendLayout();
             groupBox_list_option_Pay.SuspendLayout();
@@ -161,23 +161,14 @@
             s.Text = "Sơ đồ bàn ăn";
             s.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // lb_table_number
+            // lb_total
             // 
-            lb_table_number.Location = new Point(122, 34);
-            lb_table_number.Name = "lb_table_number";
-            lb_table_number.Size = new Size(83, 25);
-            lb_table_number.TabIndex = 0;
-            lb_table_number.Text = "Bàn ăn số :";
-            lb_table_number.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // label1
-            // 
-            label1.Location = new Point(211, 34);
-            label1.Name = "label1";
-            label1.Size = new Size(44, 25);
-            label1.TabIndex = 2;
-            label1.Text = "?";
-            label1.TextAlign = ContentAlignment.MiddleLeft;
+            lb_total.Location = new Point(21, 9);
+            lb_total.Name = "lb_total";
+            lb_total.Size = new Size(133, 25);
+            lb_total.TabIndex = 4;
+            lb_total.Text = "Tổng tiền : ";
+            lb_total.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
@@ -188,14 +179,23 @@
             label2.Text = "???";
             label2.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // lb_total
+            // label1
             // 
-            lb_total.Location = new Point(21, 9);
-            lb_total.Name = "lb_total";
-            lb_total.Size = new Size(133, 25);
-            lb_total.TabIndex = 4;
-            lb_total.Text = "Tổng tiền : ";
-            lb_total.TextAlign = ContentAlignment.MiddleLeft;
+            label1.Location = new Point(211, 34);
+            label1.Name = "label1";
+            label1.Size = new Size(44, 25);
+            label1.TabIndex = 2;
+            label1.Text = "?";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lb_table_number
+            // 
+            lb_table_number.Location = new Point(122, 34);
+            lb_table_number.Name = "lb_table_number";
+            lb_table_number.Size = new Size(83, 25);
+            lb_table_number.TabIndex = 0;
+            lb_table_number.Text = "Bàn ăn số :";
+            lb_table_number.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // frm_tables_manager
             // 
@@ -234,11 +234,11 @@
         private RadioButton radioButton_option_momo;
         private RadioButton radioButton_option_bank;
         private Label s;
+        private ListView listView1;
+        private FlowLayoutPanel flowLayoutPanel_list_table;
+        private Label lb_total;
+        private Label label2;
         private Label label1;
         private Label lb_table_number;
-        private ListView listView1;
-        private Label label2;
-        private Label lb_total;
-        private FlowLayoutPanel flowLayoutPanel_list_table;
     }
 }

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using BusinessLayer.Service;
-using TransferObject;
+using TransferObject.TransferObject;
 
 namespace PresentationLayer.Forms
 {

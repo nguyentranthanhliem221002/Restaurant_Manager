@@ -1,7 +1,7 @@
 ﻿using DataLayer.IRepository;
-using TransferObject;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using TransferObject.TransferObject;
 
 namespace BusinessLayer.Service
 {

@@ -1,8 +1,8 @@
 ﻿using DataLayer.IRepository;
-using TransferObject;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using TransferObject.TransferObject;
 
 namespace DataLayer.Repository
 {

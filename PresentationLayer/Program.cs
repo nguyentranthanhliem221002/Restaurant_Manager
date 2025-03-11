@@ -36,21 +36,24 @@ namespace PresentationLayer
         {
             ApplicationConfiguration.Initialize();
 
-            // Khởi tạo Dependency Injection (DI)
             var services = new ServiceCollection();
             ConfigureServices(services);
 
             using (var serviceProvider = services.BuildServiceProvider())
             {
-                // Kiểm tra và tự động tạo Database nếu chưa có
                 using (var scope = serviceProvider.CreateScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                     dbContext.Database.Migrate(); // Tạo Database nếu chưa có
                 }
 
-                // Chạy form chính với DI
-                Application.Run(serviceProvider.GetRequiredService<frm_main>());
+                // Mở form login trước
+                var loginForm = serviceProvider.GetRequiredService<frm_login>();
+                if (loginForm.ShowDialog() == DialogResult.OK) // Nếu đăng nhập thành công
+                {
+                    // Mở form chính sau khi đăng nhập
+                    Application.Run(serviceProvider.GetRequiredService<frm_main>());
+                }
             }
         }
 
@@ -87,6 +90,7 @@ namespace PresentationLayer
             services.AddScoped<OrderDetailService>();
 
             // Đăng ký Forms với DI
+            services.AddTransient<frm_login>(); // Form login
             services.AddTransient<frm_main>();
             services.AddTransient<frm_foods_manager>();
             services.AddTransient<frm_categories_manager>();

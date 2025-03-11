@@ -1,6 +1,6 @@
 ﻿using DataLayer.IRepository;
 using Microsoft.EntityFrameworkCore;
-using TransferObject;
+using TransferObject.TransferObject;
 
 namespace DataLayer.Repository
 {

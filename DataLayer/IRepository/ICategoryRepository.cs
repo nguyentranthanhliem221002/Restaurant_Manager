@@ -1,5 +1,5 @@
-﻿using TransferObject;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TransferObject.TransferObject;
 
 namespace DataLayer.IRepository
 {

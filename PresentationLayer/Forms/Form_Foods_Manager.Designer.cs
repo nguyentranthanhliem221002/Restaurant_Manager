@@ -50,6 +50,7 @@
             txt_foods_manager_search = new TextBox();
             lb_foods_manager_search = new Label();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            btn_categories_manager = new Button();
             groupBox_listFood.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_listFood).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_upload).BeginInit();
@@ -92,7 +93,7 @@
             // 
             // txt_foodName
             // 
-            txt_foodName.Location = new Point(119, 63);
+            txt_foodName.Location = new Point(99, 63);
             txt_foodName.Name = "txt_foodName";
             txt_foodName.Size = new Size(176, 27);
             txt_foodName.TabIndex = 2;
@@ -101,7 +102,7 @@
             // 
             lb_foodName.Location = new Point(15, 65);
             lb_foodName.Name = "lb_foodName";
-            lb_foodName.Size = new Size(98, 25);
+            lb_foodName.Size = new Size(78, 25);
             lb_foodName.TabIndex = 3;
             lb_foodName.Text = "Tên món :";
             lb_foodName.TextAlign = ContentAlignment.MiddleLeft;
@@ -110,14 +111,14 @@
             // 
             lb_foodPrice.Location = new Point(15, 128);
             lb_foodPrice.Name = "lb_foodPrice";
-            lb_foodPrice.Size = new Size(98, 25);
+            lb_foodPrice.Size = new Size(78, 25);
             lb_foodPrice.TabIndex = 5;
             lb_foodPrice.Text = "Giá :";
             lb_foodPrice.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // txt_foodPrice
             // 
-            txt_foodPrice.Location = new Point(119, 126);
+            txt_foodPrice.Location = new Point(99, 126);
             txt_foodPrice.Name = "txt_foodPrice";
             txt_foodPrice.Size = new Size(176, 27);
             txt_foodPrice.TabIndex = 4;
@@ -134,9 +135,9 @@
             // comboBox_listCategory
             // 
             comboBox_listCategory.FormattingEnabled = true;
-            comboBox_listCategory.Location = new Point(119, 198);
+            comboBox_listCategory.Location = new Point(99, 198);
             comboBox_listCategory.Name = "comboBox_listCategory";
-            comboBox_listCategory.Size = new Size(176, 28);
+            comboBox_listCategory.Size = new Size(71, 28);
             comboBox_listCategory.TabIndex = 7;
             // 
             // lb_foodImage
@@ -263,12 +264,23 @@
             sqlCommand1.CommandTimeout = 30;
             sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
+            // btn_categories_manager
+            // 
+            btn_categories_manager.Location = new Point(176, 198);
+            btn_categories_manager.Name = "btn_categories_manager";
+            btn_categories_manager.Size = new Size(99, 28);
+            btn_categories_manager.TabIndex = 20;
+            btn_categories_manager.Text = "Quản lý loại ";
+            btn_categories_manager.UseVisualStyleBackColor = true;
+            btn_categories_manager.Click += btn_categories_manager_Click;
+            // 
             // frm_foods_manager
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1178, 645);
+            Controls.Add(btn_categories_manager);
             Controls.Add(lb_foods_manager_search);
             Controls.Add(txt_foods_manager_search);
             Controls.Add(btn_foodSearch);
@@ -326,5 +338,6 @@
         private TextBox txt_foods_manager_search;
         private Label lb_foods_manager_search;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private Button btn_categories_manager;
     }
 }

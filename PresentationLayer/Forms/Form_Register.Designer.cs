@@ -66,6 +66,7 @@
             // 
             txt_register_password.Location = new Point(676, 297);
             txt_register_password.Name = "txt_register_password";
+            txt_register_password.PasswordChar = 'o';
             txt_register_password.Size = new Size(346, 27);
             txt_register_password.TabIndex = 14;
             // 
@@ -116,6 +117,7 @@
             // 
             textBox1.Location = new Point(676, 420);
             textBox1.Name = "textBox1";
+            textBox1.PasswordChar = 'o';
             textBox1.Size = new Size(346, 27);
             textBox1.TabIndex = 19;
             // 

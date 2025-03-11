@@ -1,4 +1,4 @@
-﻿using TransferObject;
+﻿using TransferObject.TransferObject;
 
 namespace DataLayer.IRepository
 {

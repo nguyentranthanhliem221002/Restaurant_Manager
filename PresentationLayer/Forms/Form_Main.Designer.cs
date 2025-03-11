@@ -38,7 +38,6 @@ partial class frm_main
         panel_container = new Panel();
         panel_nav = new Panel();
         lb_main_title = new Label();
-        btn_login = new Button();
         btn_exit = new Button();
         panel_sidebar.SuspendLayout();
         panel_nav.SuspendLayout();
@@ -114,6 +113,7 @@ partial class frm_main
         btn_customers_manager.TabIndex = 1;
         btn_customers_manager.Text = "Quản lý khách hàng";
         btn_customers_manager.UseVisualStyleBackColor = false;
+        btn_customers_manager.Click += btn_customers_manager_Click;
         // 
         // btn_tables
         // 
@@ -139,7 +139,6 @@ partial class frm_main
         // 
         panel_nav.BackColor = Color.DarkSlateGray;
         panel_nav.Controls.Add(lb_main_title);
-        panel_nav.Controls.Add(btn_login);
         panel_nav.Controls.Add(btn_exit);
         panel_nav.Location = new Point(0, 0);
         panel_nav.Name = "panel_nav";
@@ -156,16 +155,6 @@ partial class frm_main
         lb_main_title.TabIndex = 1;
         lb_main_title.Text = "Quản lý nhà hàng";
         lb_main_title.TextAlign = ContentAlignment.MiddleCenter;
-        // 
-        // btn_login
-        // 
-        btn_login.Location = new Point(1138, 0);
-        btn_login.Name = "btn_login";
-        btn_login.Size = new Size(136, 76);
-        btn_login.TabIndex = 0;
-        btn_login.Text = "Đăng nhập";
-        btn_login.UseVisualStyleBackColor = true;
-        btn_login.Click += btn_login_Click;
         // 
         // btn_exit
         // 
@@ -190,7 +179,6 @@ partial class frm_main
         Name = "frm_main";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Trang chủ";
-        Load += Form_Main_Load;
         panel_sidebar.ResumeLayout(false);
         panel_nav.ResumeLayout(false);
         ResumeLayout(false);
@@ -208,6 +196,5 @@ partial class frm_main
     private Button btn_foods_manager;
     private Button btn_customers_manager;
     private Button btn_tables;
-    private Button btn_login;
     private Label lb_main_title;
 }

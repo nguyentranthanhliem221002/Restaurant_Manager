@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TransferObject;
+using TransferObject.TransferObject;
 
 namespace PresentationLayer
 {
@@ -23,14 +23,14 @@ namespace PresentationLayer
 
         private void LoadEmployeeData()
         {
-            var employeeList = employeeService.GetAllEmployees().ToList(); // Chuyển danh sách về List<T>
-            dgv_listEmployee.DataSource = null;
-            dgv_listEmployee.DataSource = employeeList;
+            var employees = employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>(); // Đảm bảo danh sách không null
+            dgv_listEmployee.DataSource = employees;
         }
+
 
         private void frm_employees_manager_Load(object sender, EventArgs e)
         {
-            LoadEmployeeData(); // Load danh sách nhân viên
+            LoadEmployeeData();
         }
 
         private void btn_employeeAdd_Click(object sender, EventArgs e)
@@ -54,35 +54,34 @@ namespace PresentationLayer
             };
 
             employeeService.AddEmployee(employee);
-            LoadEmployeeData(); // Cập nhật lại danh sách sau khi thêm
+            LoadEmployeeData();
             MessageBox.Show("Thêm nhân viên thành công!", "Thông báo");
 
-            // Xóa dữ liệu nhập sau khi thêm thành công
+
             txt_employeeName.Clear();
             txt_employeePhone.Clear();
-            txt_employeeName.Focus();
+            txt_employeeName.Focus(); //??? btn_employeeUpdate.Tag = null;
         }
-
 
         private void btn_employeeDelete_Click(object sender, EventArgs e)
         {
-            if (dgv_listEmployee.SelectedRows.Count > 0)
-            {
-                int employeeId = (int)dgv_listEmployee.SelectedRows[0].Cells["Id"].Value;
-
-                DialogResult result = MessageBox.Show("Bạn có chắc muốn xóa nhân viên này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
-                {
-                    employeeService.DeleteEmployee(employeeId);
-                    LoadEmployeeData(); // Cập nhật lại danh sách sau khi xóa
-                    MessageBox.Show("Xóa nhân viên thành công!", "Thông báo");
-                }
-            }
-            else
+            if (dgv_listEmployee.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn một nhân viên để xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int employeeId = (int)dgv_listEmployee.SelectedRows[0].Cells["Id"].Value;
+            DialogResult result = MessageBox.Show("Bạn có chắc muốn xóa nhân viên này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                employeeService.DeleteEmployee(employeeId);
+                LoadEmployeeData();
+                MessageBox.Show("Xóa nhân viên thành công!", "Thông báo");
             }
         }
+
 
         private void btn_employeeFix_Click(object sender, EventArgs e)
         {
@@ -97,7 +96,7 @@ namespace PresentationLayer
                 txt_employeePhone.Text = phone;
                 dateTimePicker_employees_manager_startDate.Value = dateOfJoining;
 
-                btn_employeeUpdate.Tag = employeeId; // Lưu ID vào Tag để cập nhật sau
+                btn_employeeUpdate.Tag = employeeId; 
             }
             else
             {
@@ -107,53 +106,59 @@ namespace PresentationLayer
 
         private void btn_employeeUpdate_Click(object sender, EventArgs e)
         {
-            if (btn_employeeUpdate.Tag != null)
-            {
-                int employeeId = (int)btn_employeeUpdate.Tag;
-                string employeeName = txt_employeeName.Text;
-                string phone = txt_employeePhone.Text;
-                DateTime dateOfJoining = dateTimePicker_employees_manager_startDate.Value;
-
-                Employee employee = new Employee
-                {
-                    Id = employeeId,
-                    Name = employeeName,
-                    Phone = phone,
-                    DateOfJoining = dateOfJoining
-                };
-
-                employeeService.UpdateEmployee(employee);
-                LoadEmployeeData(); // Cập nhật lại danh sách sau khi sửa
-                MessageBox.Show("Cập nhật nhân viên thành công!", "Thông báo");
-
-                // Xóa dữ liệu sau khi cập nhật
-                txt_employeeName.Clear();
-                txt_employeePhone.Clear();
-                btn_employeeUpdate.Tag = null;
-            }
-            else
+            if (btn_employeeUpdate.Tag == null)
             {
                 MessageBox.Show("Vui lòng chọn một nhân viên để cập nhật!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            if (string.IsNullOrWhiteSpace(txt_employeeName.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txt_employeePhone.Text))
+            {
+                MessageBox.Show("Vui lòng nhập số điện thoại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int employeeId = (int)btn_employeeUpdate.Tag;
+            string employeeName = txt_employeeName.Text;
+            string phone = txt_employeePhone.Text;
+            DateTime dateOfJoining = dateTimePicker_employees_manager_startDate.Value;
+
+            Employee employee = new Employee
+            {
+                Id = employeeId,
+                Name = employeeName,
+                Phone = phone,
+                DateOfJoining = dateOfJoining
+            };
+
+            employeeService.UpdateEmployee(employee);
+            LoadEmployeeData();
+            MessageBox.Show("Cập nhật nhân viên thành công!", "Thông báo");
+
+            // Xóa dữ liệu sau khi cập nhật
+            txt_employeeName.Clear();
+            txt_employeePhone.Clear();
+            btn_employeeUpdate.Tag = null;
         }
 
         private void btn_employeeSearch_Click(object sender, EventArgs e)
         {
-            string keyword = txt_employees_manager_search.Text.Trim().ToLower(); // Lấy từ khóa và chuyển thành chữ thường
+            string keyword = txt_employees_manager_search.Text.Trim().ToLower();
+            var employees = employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>();
 
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                var searchResult = employeeService.GetAllEmployees()
-                                      .Where(f => f.Name.ToLower().Contains(keyword))
-                                      .ToList();
+            var searchResult = string.IsNullOrEmpty(keyword)
+                ? employees
+                : employees.Where(e => e.Name.ToLower().Contains(keyword)).ToList();
 
-                dgv_listEmployee.DataSource = null;
-                dgv_listEmployee.DataSource = searchResult;
-            }
-            else
-            {
-                LoadEmployeeData(); // Nếu ô tìm kiếm rỗng, hiển thị toàn bộ nhân viên
-            }
+            dgv_listEmployee.DataSource = null;
+            dgv_listEmployee.DataSource = searchResult;
         }
+
     }
 }

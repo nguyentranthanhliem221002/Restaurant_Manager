@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TransferObject.TransferObject
+{
+    public class Category
+    {
+        public Category() { }
+
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        public List<Food> Foods { get; set; } = new List<Food>();
+    }
+}

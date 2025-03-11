@@ -77,6 +77,7 @@
             // 
             txt_login_password.Location = new Point(675, 294);
             txt_login_password.Name = "txt_login_password";
+            txt_login_password.PasswordChar = 'o';
             txt_login_password.Size = new Size(346, 27);
             txt_login_password.TabIndex = 5;
             // 
@@ -99,6 +100,7 @@
             btn_login_submit.TabIndex = 6;
             btn_login_submit.Text = "Đăng nhập";
             btn_login_submit.UseVisualStyleBackColor = false;
+            btn_login_submit.Click += btn_login_submit_Click;
             // 
             // checkBox1
             // 
@@ -119,7 +121,6 @@
             linkLabel_login_toRegister.TabIndex = 8;
             linkLabel_login_toRegister.TabStop = true;
             linkLabel_login_toRegister.Text = "Đăng ký";
-            linkLabel_login_toRegister.LinkClicked += linkLabel_login_toRegister_LinkClicked;
             // 
             // frm_login
             // 
