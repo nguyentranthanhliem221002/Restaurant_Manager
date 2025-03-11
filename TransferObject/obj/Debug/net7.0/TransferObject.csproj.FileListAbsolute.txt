@@ -1,0 +1,11 @@
+D:\Restaurant_Manager\TransferObject\bin\Debug\net7.0\TransferObject.deps.json
+D:\Restaurant_Manager\TransferObject\bin\Debug\net7.0\TransferObject.dll
+D:\Restaurant_Manager\TransferObject\bin\Debug\net7.0\TransferObject.pdb
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\TransferObject.GeneratedMSBuildEditorConfig.editorconfig
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\TransferObject.AssemblyInfoInputs.cache
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\TransferObject.AssemblyInfo.cs
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\TransferObject.csproj.CoreCompileInputs.cache
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\TransferObject.dll
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\refint\TransferObject.dll
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\TransferObject.pdb
+D:\Restaurant_Manager\TransferObject\obj\Debug\net7.0\ref\TransferObject.dll

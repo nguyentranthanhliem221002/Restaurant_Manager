@@ -1,0 +1,17 @@
+D:\Restaurant_Manager\DataLayer\bin\Debug\net7.0\DataLayer.deps.json
+D:\Restaurant_Manager\DataLayer\bin\Debug\net7.0\DataLayer.runtimeconfig.json
+D:\Restaurant_Manager\DataLayer\bin\Debug\net7.0\DataLayer.dll
+D:\Restaurant_Manager\DataLayer\bin\Debug\net7.0\DataLayer.pdb
+D:\Restaurant_Manager\DataLayer\bin\Debug\net7.0\TransferObject.dll
+D:\Restaurant_Manager\DataLayer\bin\Debug\net7.0\TransferObject.pdb
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.csproj.AssemblyReference.cache
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.AssemblyInfoInputs.cache
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.AssemblyInfo.cs
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.csproj.CoreCompileInputs.cache
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.csproj.Up2Date
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.dll
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\refint\DataLayer.dll
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.pdb
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\DataLayer.genruntimeconfig.cache
+D:\Restaurant_Manager\DataLayer\obj\Debug\net7.0\ref\DataLayer.dll
