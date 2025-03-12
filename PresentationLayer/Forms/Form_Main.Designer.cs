@@ -160,7 +160,6 @@ partial class frm_main
         btn_user.Size = new Size(83, 76);
         btn_user.TabIndex = 2;
         btn_user.UseVisualStyleBackColor = false;
-        btn_user.Click += btn_user_Click;
         // 
         // lb_main_title
         // 
@@ -183,6 +182,7 @@ partial class frm_main
         btn_exit.TabIndex = 0;
         btn_exit.Text = "x";
         btn_exit.UseVisualStyleBackColor = false;
+        btn_exit.Click += btn_exit_Click;
         // 
         // frm_main
         // 

@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.Load += new System.EventHandler(this.frm_tables_manager_Load);
+
             groupBox_list_table = new GroupBox();
             flowLayoutPanel_list_table = new FlowLayoutPanel();
             groupBox_tableInfo = new GroupBox();

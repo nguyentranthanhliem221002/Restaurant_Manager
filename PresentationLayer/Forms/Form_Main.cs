@@ -115,19 +115,22 @@ namespace PresentationLayer
         //}
 
         // Thoát ứng dụng
-        private void btn_exit_Click(object sender, EventArgs e)
+        //private void btn_exit_Click(object sender, EventArgs e)
+        //{
+        //DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        //    if (cmd == DialogResult.Yes)
+        //    {
+        //        Application.Exit();
+        //    }
+    //}
+
+    private void panel_container_Paint(object sender, PaintEventArgs e)
         {
-            DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (cmd == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
+
         }
 
-        private void panel_container_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
+
 
         private void btn_user_Click(object sender, EventArgs e)
         {
@@ -136,6 +139,15 @@ namespace PresentationLayer
 
             frm_login.FormClosed += (s, args) => this.Show();
             frm_login.ShowDialog();
+        }
+
+        private void btn_exit_Click(object sender, EventArgs e)
+        {
+            DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (cmd == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
         }
     }
 }
