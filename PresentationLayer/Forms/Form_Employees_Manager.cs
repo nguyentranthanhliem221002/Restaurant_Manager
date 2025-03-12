@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.Service;
+using Microsoft.Extensions.DependencyInjection;
+using PresentationLayer.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,29 +10,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TransferObject.Security;
 using TransferObject.TransferObject;
 
 namespace PresentationLayer
 {
     public partial class frm_employees_manager : Form
     {
-        private readonly EmployeeService employeeService;
-        public frm_employees_manager(EmployeeService service)
+        private EmployeeService employeeService;
+        private RoleService roleService; // Thêm RoleService
+        private readonly IServiceProvider serviceProvider;  // Nhận từ DI
+
+
+        public frm_employees_manager(EmployeeService employeeService, RoleService roleService, IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            this.employeeService = service;
+            this.employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
+            this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
+
+
 
         private void LoadEmployeeData()
         {
             var employees = employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>(); // Đảm bảo danh sách không null
             dgv_listEmployee.DataSource = employees;
         }
+        private void LoadRoleData()
+        {
+            var roleList = roleService.GetAllRoles()?.ToList() ?? new List<Role>();
+            comboBox_listLevel.DataSource = roleList;
+            comboBox_listLevel.DisplayMember = "Name";
+            comboBox_listLevel.ValueMember = "Id";
+        }
 
 
         private void frm_employees_manager_Load(object sender, EventArgs e)
         {
             LoadEmployeeData();
+            LoadRoleData();
         }
 
         private void btn_employeeAdd_Click(object sender, EventArgs e)
@@ -71,7 +90,12 @@ namespace PresentationLayer
                 return;
             }
 
-            int employeeId = (int)dgv_listEmployee.SelectedRows[0].Cells["Id"].Value;
+            if (dgv_listEmployee.SelectedRows[0].Cells["Id"].Value is not int employeeId)
+            {
+                MessageBox.Show("Dữ liệu nhân viên không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             DialogResult result = MessageBox.Show("Bạn có chắc muốn xóa nhân viên này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
@@ -96,7 +120,7 @@ namespace PresentationLayer
                 txt_employeePhone.Text = phone;
                 dateTimePicker_employees_manager_startDate.Value = dateOfJoining;
 
-                btn_employeeUpdate.Tag = employeeId; 
+                btn_employeeUpdate.Tag = employeeId;
             }
             else
             {
@@ -160,5 +184,20 @@ namespace PresentationLayer
             dgv_listEmployee.DataSource = searchResult;
         }
 
+        private void comboBox_listLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_roles_manager_Click(object sender, EventArgs e)
+        {
+            var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
+            if (frmMain != null)
+            {
+                var frmRolesManager = serviceProvider.GetRequiredService<frm_categories_manager>();
+                frmMain.OpenChildForm(frmRolesManager);
+            }
+        }
+      
     }
 }

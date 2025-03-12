@@ -37,6 +37,7 @@
             btn_login_submit = new Button();
             checkBox1 = new CheckBox();
             linkLabel_login_toRegister = new LinkLabel();
+            btn_exit = new Button();
             SuspendLayout();
             // 
             // lb_login_title
@@ -121,6 +122,19 @@
             linkLabel_login_toRegister.TabIndex = 8;
             linkLabel_login_toRegister.TabStop = true;
             linkLabel_login_toRegister.Text = "Đăng ký";
+            linkLabel_login_toRegister.LinkClicked += linkLabel_login_toRegister_LinkClicked;
+            // 
+            // btn_exit
+            // 
+            btn_exit.BackColor = Color.Red;
+            btn_exit.ForeColor = Color.White;
+            btn_exit.Location = new Point(1136, 12);
+            btn_exit.Name = "btn_exit";
+            btn_exit.Size = new Size(30, 30);
+            btn_exit.TabIndex = 9;
+            btn_exit.Text = "x";
+            btn_exit.UseVisualStyleBackColor = false;
+            btn_exit.Click += btn_exit_Click;
             // 
             // frm_login
             // 
@@ -128,6 +142,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1178, 645);
+            Controls.Add(btn_exit);
             Controls.Add(linkLabel_login_toRegister);
             Controls.Add(checkBox1);
             Controls.Add(btn_login_submit);
@@ -156,5 +171,6 @@
         private Button btn_login_submit;
         private CheckBox checkBox1;
         private LinkLabel linkLabel_login_toRegister;
+        private Button btn_exit;
     }
 }

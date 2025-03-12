@@ -28,6 +28,7 @@ partial class frm_main
     /// </summary>
     private void InitializeComponent()
     {
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_main));
         panel_sidebar = new Panel();
         btn_employees_manager = new Button();
         btn_account = new Button();
@@ -37,6 +38,7 @@ partial class frm_main
         btn_tables = new Button();
         panel_container = new Panel();
         panel_nav = new Panel();
+        btn_user = new Button();
         lb_main_title = new Label();
         btn_exit = new Button();
         panel_sidebar.SuspendLayout();
@@ -90,6 +92,7 @@ partial class frm_main
         btn_order.TabIndex = 3;
         btn_order.Text = "Thống kê";
         btn_order.UseVisualStyleBackColor = false;
+        btn_order.Click += btn_order_Click;
         // 
         // btn_foods_manager
         // 
@@ -134,16 +137,30 @@ partial class frm_main
         panel_container.Name = "panel_container";
         panel_container.Size = new Size(1178, 645);
         panel_container.TabIndex = 1;
+        panel_container.Paint += panel_container_Paint;
         // 
         // panel_nav
         // 
         panel_nav.BackColor = Color.DarkSlateGray;
+        panel_nav.Controls.Add(btn_user);
         panel_nav.Controls.Add(lb_main_title);
         panel_nav.Controls.Add(btn_exit);
         panel_nav.Location = new Point(0, 0);
         panel_nav.Name = "panel_nav";
         panel_nav.Size = new Size(1348, 76);
         panel_nav.TabIndex = 2;
+        // 
+        // btn_user
+        // 
+        btn_user.BackColor = Color.DarkTurquoise;
+        btn_user.BackgroundImage = (Image)resources.GetObject("btn_user.BackgroundImage");
+        btn_user.BackgroundImageLayout = ImageLayout.Zoom;
+        btn_user.Location = new Point(1188, 0);
+        btn_user.Name = "btn_user";
+        btn_user.Size = new Size(83, 76);
+        btn_user.TabIndex = 2;
+        btn_user.UseVisualStyleBackColor = false;
+        btn_user.Click += btn_user_Click;
         // 
         // lb_main_title
         // 
@@ -158,13 +175,14 @@ partial class frm_main
         // 
         // btn_exit
         // 
+        btn_exit.BackColor = Color.Red;
+        btn_exit.ForeColor = Color.White;
         btn_exit.Location = new Point(1292, 24);
         btn_exit.Name = "btn_exit";
         btn_exit.Size = new Size(30, 30);
         btn_exit.TabIndex = 0;
         btn_exit.Text = "x";
-        btn_exit.UseVisualStyleBackColor = true;
-        btn_exit.Click += btn_exit_Click;
+        btn_exit.UseVisualStyleBackColor = false;
         // 
         // frm_main
         // 
@@ -197,4 +215,5 @@ partial class frm_main
     private Button btn_customers_manager;
     private Button btn_tables;
     private Label lb_main_title;
+    private Button btn_user;
 }

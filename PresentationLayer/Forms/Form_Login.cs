@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using DataLayer; // Import DataLayer chứa ApplicationDbContext
-using TransferObject.Security; // Import các model User, Role, UserRole
+using DataLayer;
+using TransferObject.Security;
 using Microsoft.EntityFrameworkCore;
+using BusinessLayer.Service;
 using PresentationLayer.Forms;
-using BusinessLayer.Service; // Import các Service
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PresentationLayer
 {
@@ -18,18 +19,17 @@ namespace PresentationLayer
         private readonly EmployeeService _employeeService;
         private readonly IServiceProvider _serviceProvider;
 
-        public frm_login(ApplicationDbContext context, TableService tableService,
-                         FoodService foodService, CategoryService categoryService,
-                         EmployeeService employeeService, IServiceProvider serviceProvider)
+        public frm_login(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _context = context;
-            _tableService = tableService;
-            _foodService = foodService;
-            _categoryService = categoryService;
-            _employeeService = employeeService;
             _serviceProvider = serviceProvider;
+            _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
+            _tableService = _serviceProvider.GetRequiredService<TableService>();
+            _foodService = _serviceProvider.GetRequiredService<FoodService>();
+            _categoryService = _serviceProvider.GetRequiredService<CategoryService>();
+            _employeeService = _serviceProvider.GetRequiredService<EmployeeService>();
         }
+
 
         private void btn_login_submit_Click(object sender, EventArgs e)
         {
@@ -41,11 +41,10 @@ namespace PresentationLayer
             if (user != null)
             {
                 MessageBox.Show($"Đăng nhập thành công! Chào {user.UserName}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 string userRole = user.UserRoles.Any() ? user.UserRoles.First().Role.Name : "Employee";
 
                 this.Hide();
-                var mainForm = new frm_main(_serviceProvider, userRole); // Truyền role vào form chính
+                var mainForm = new frm_main(_serviceProvider, userRole);
                 mainForm.ShowDialog();
                 this.Show();
             }
@@ -55,32 +54,29 @@ namespace PresentationLayer
             }
         }
 
-
         private User AuthenticateUser(string username, string password)
         {
             return _context.Users
                            .Include(u => u.UserRoles)
                            .ThenInclude(ur => ur.Role)
-                           .FirstOrDefault(u => u.UserName == username && u.PasswordHash == password); // Thay thế bằng Hash nếu có
+                           .FirstOrDefault(u => u.UserName == username && u.PasswordHash == password);
         }
 
-        private void ShowUserForms(User user)
+        private void btn_exit_Click(object sender, EventArgs e)
         {
-            var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
+            DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (cmd == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
 
-            if (roles.Contains("Admin"))
-            {
-                // Admin có toàn quyền, mở tất cả các form
-                new frm_tables_manager(_tableService).Show();
-                new frm_foods_manager(_foodService, _categoryService, _serviceProvider).Show();
-                new frm_employees_manager(_employeeService).Show();
-                new frm_categories_manager(_categoryService).Show();
-            }
-            else if (roles.Contains("Employee"))
-            {
-                // Nhân viên chỉ mở frm_tables_manager
-                new frm_tables_manager(_tableService).Show();
-            }
+        private void linkLabel_login_toRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.Hide();
+            frm_register registerForm = new frm_register(_serviceProvider) { Owner = this };
+            registerForm.FormClosed += (s, args) => this.Show();
+            registerForm.ShowDialog();
         }
     }
 }

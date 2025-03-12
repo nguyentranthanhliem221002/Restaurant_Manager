@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             linkLabel_register_toLogin = new LinkLabel();
-            btn_login_submit = new Button();
+            btn_register_submit = new Button();
             txt_register_password = new TextBox();
             lb_register_password = new Label();
             txt_register_user = new TextBox();
             lb_register_user = new Label();
             panel_register = new Panel();
             lb_register_title = new Label();
-            textBox1 = new TextBox();
-            label1 = new Label();
+            txt_register_password2 = new TextBox();
+            lb_register_password2 = new Label();
+            btn_exit = new Button();
             SuspendLayout();
             // 
             // linkLabel_register_toLogin
@@ -51,16 +52,17 @@
             linkLabel_register_toLogin.Text = "Quay về trang đăng nhập";
             linkLabel_register_toLogin.LinkClicked += linkLabel_register_toLogin_LinkClicked;
             // 
-            // btn_login_submit
+            // btn_register_submit
             // 
-            btn_login_submit.BackColor = Color.SpringGreen;
-            btn_login_submit.ForeColor = Color.White;
-            btn_login_submit.Location = new Point(676, 513);
-            btn_login_submit.Name = "btn_login_submit";
-            btn_login_submit.Size = new Size(346, 54);
-            btn_login_submit.TabIndex = 15;
-            btn_login_submit.Text = "Đăng nhập";
-            btn_login_submit.UseVisualStyleBackColor = false;
+            btn_register_submit.BackColor = Color.SpringGreen;
+            btn_register_submit.ForeColor = Color.White;
+            btn_register_submit.Location = new Point(676, 513);
+            btn_register_submit.Name = "btn_register_submit";
+            btn_register_submit.Size = new Size(346, 54);
+            btn_register_submit.TabIndex = 15;
+            btn_register_submit.Text = "Đăng ký";
+            btn_register_submit.UseVisualStyleBackColor = false;
+            btn_register_submit.Click += btn_register_submit_Click;
             // 
             // txt_register_password
             // 
@@ -113,22 +115,33 @@
             lb_register_title.Text = "Đăng ký";
             lb_register_title.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // textBox1
+            // txt_register_password2
             // 
-            textBox1.Location = new Point(676, 420);
-            textBox1.Name = "textBox1";
-            textBox1.PasswordChar = 'o';
-            textBox1.Size = new Size(346, 27);
-            textBox1.TabIndex = 19;
+            txt_register_password2.Location = new Point(676, 420);
+            txt_register_password2.Name = "txt_register_password2";
+            txt_register_password2.PasswordChar = 'o';
+            txt_register_password2.Size = new Size(346, 27);
+            txt_register_password2.TabIndex = 19;
             // 
-            // label1
+            // lb_register_password2
             // 
-            label1.Location = new Point(513, 420);
-            label1.Name = "label1";
-            label1.Size = new Size(157, 28);
-            label1.TabIndex = 18;
-            label1.Text = "Nhập lại mật khẩu :";
-            label1.TextAlign = ContentAlignment.MiddleLeft;
+            lb_register_password2.Location = new Point(513, 420);
+            lb_register_password2.Name = "lb_register_password2";
+            lb_register_password2.Size = new Size(157, 28);
+            lb_register_password2.TabIndex = 18;
+            lb_register_password2.Text = "Nhập lại mật khẩu :";
+            lb_register_password2.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btn_exit
+            // 
+            btn_exit.BackColor = Color.Red;
+            btn_exit.ForeColor = Color.White;
+            btn_exit.Location = new Point(1136, 12);
+            btn_exit.Name = "btn_exit";
+            btn_exit.Size = new Size(30, 30);
+            btn_exit.TabIndex = 20;
+            btn_exit.Text = "x";
+            btn_exit.UseVisualStyleBackColor = false;
             // 
             // frm_register
             // 
@@ -136,10 +149,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1178, 645);
-            Controls.Add(textBox1);
-            Controls.Add(label1);
+            Controls.Add(btn_exit);
+            Controls.Add(txt_register_password2);
+            Controls.Add(lb_register_password2);
             Controls.Add(linkLabel_register_toLogin);
-            Controls.Add(btn_login_submit);
+            Controls.Add(btn_register_submit);
             Controls.Add(txt_register_password);
             Controls.Add(lb_register_password);
             Controls.Add(txt_register_user);
@@ -158,14 +172,15 @@
 
         private LinkLabel linkLabel_register_toLogin;
         private CheckBox checkBox1;
-        private Button btn_login_submit;
+        private Button btn_register_submit;
         private TextBox txt_register_password;
         private Label lb_register_password;
         private TextBox txt_register_user;
         private Label lb_register_user;
         private Panel panel_register;
         private Label lb_register_title;
-        private TextBox textBox1;
-        private Label label1;
+        private TextBox txt_register_password2;
+        private Label lb_register_password2;
+        private Button btn_exit;
     }
 }

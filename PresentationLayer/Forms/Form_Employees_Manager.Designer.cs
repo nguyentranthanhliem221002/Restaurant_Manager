@@ -47,6 +47,7 @@
             groupBox_listEmployee = new GroupBox();
             dateTimePicker_employees_manager_startDate = new DateTimePicker();
             lb_employees_manager_startDate = new Label();
+            btn_roles_manager = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_listEmployee).BeginInit();
             groupBox_listEmployee.SuspendLayout();
             SuspendLayout();
@@ -58,7 +59,7 @@
             // 
             // lb_employees_manager_search
             // 
-            lb_employees_manager_search.Location = new Point(920, 45);
+            lb_employees_manager_search.Location = new Point(915, 48);
             lb_employees_manager_search.Name = "lb_employees_manager_search";
             lb_employees_manager_search.Size = new Size(88, 25);
             lb_employees_manager_search.TabIndex = 39;
@@ -67,7 +68,7 @@
             // 
             // txt_employees_manager_search
             // 
-            txt_employees_manager_search.Location = new Point(920, 82);
+            txt_employees_manager_search.Location = new Point(915, 85);
             txt_employees_manager_search.Multiline = true;
             txt_employees_manager_search.Name = "txt_employees_manager_search";
             txt_employees_manager_search.Size = new Size(217, 25);
@@ -77,7 +78,7 @@
             // 
             btn_employeeSearch.BackColor = Color.FromArgb(128, 255, 255);
             btn_employeeSearch.ForeColor = Color.White;
-            btn_employeeSearch.Location = new Point(920, 119);
+            btn_employeeSearch.Location = new Point(915, 122);
             btn_employeeSearch.Name = "btn_employeeSearch";
             btn_employeeSearch.Size = new Size(217, 40);
             btn_employeeSearch.TabIndex = 37;
@@ -89,7 +90,7 @@
             // 
             btn_employeeUpdate.BackColor = Color.Gray;
             btn_employeeUpdate.ForeColor = Color.White;
-            btn_employeeUpdate.Location = new Point(920, 552);
+            btn_employeeUpdate.Location = new Point(915, 555);
             btn_employeeUpdate.Name = "btn_employeeUpdate";
             btn_employeeUpdate.Size = new Size(217, 78);
             btn_employeeUpdate.TabIndex = 34;
@@ -100,7 +101,7 @@
             // btn_employeeFix
             // 
             btn_employeeFix.ForeColor = Color.Black;
-            btn_employeeFix.Location = new Point(920, 453);
+            btn_employeeFix.Location = new Point(915, 456);
             btn_employeeFix.Name = "btn_employeeFix";
             btn_employeeFix.Size = new Size(217, 78);
             btn_employeeFix.TabIndex = 33;
@@ -112,7 +113,7 @@
             // 
             btn_employeeDelete.BackColor = Color.Tomato;
             btn_employeeDelete.ForeColor = Color.White;
-            btn_employeeDelete.Location = new Point(920, 354);
+            btn_employeeDelete.Location = new Point(915, 357);
             btn_employeeDelete.Name = "btn_employeeDelete";
             btn_employeeDelete.Size = new Size(217, 78);
             btn_employeeDelete.TabIndex = 32;
@@ -124,7 +125,7 @@
             // 
             btn_employeeAdd.BackColor = Color.FromArgb(128, 255, 128);
             btn_employeeAdd.ForeColor = Color.White;
-            btn_employeeAdd.Location = new Point(920, 258);
+            btn_employeeAdd.Location = new Point(915, 261);
             btn_employeeAdd.Name = "btn_employeeAdd";
             btn_employeeAdd.Size = new Size(217, 78);
             btn_employeeAdd.TabIndex = 31;
@@ -135,14 +136,15 @@
             // comboBox_listLevel
             // 
             comboBox_listLevel.FormattingEnabled = true;
-            comboBox_listLevel.Location = new Point(148, 200);
+            comboBox_listLevel.Location = new Point(143, 203);
             comboBox_listLevel.Name = "comboBox_listLevel";
-            comboBox_listLevel.Size = new Size(225, 28);
+            comboBox_listLevel.Size = new Size(71, 28);
             comboBox_listLevel.TabIndex = 27;
+            comboBox_listLevel.SelectedIndexChanged += comboBox_listLevel_SelectedIndexChanged;
             // 
             // lb_employeeLevel
             // 
-            lb_employeeLevel.Location = new Point(26, 198);
+            lb_employeeLevel.Location = new Point(21, 201);
             lb_employeeLevel.Name = "lb_employeeLevel";
             lb_employeeLevel.Size = new Size(98, 25);
             lb_employeeLevel.TabIndex = 26;
@@ -151,7 +153,7 @@
             // 
             // lb_employeePhone
             // 
-            lb_employeePhone.Location = new Point(26, 128);
+            lb_employeePhone.Location = new Point(21, 131);
             lb_employeePhone.Name = "lb_employeePhone";
             lb_employeePhone.Size = new Size(116, 25);
             lb_employeePhone.TabIndex = 25;
@@ -160,14 +162,14 @@
             // 
             // txt_employeePhone
             // 
-            txt_employeePhone.Location = new Point(148, 132);
+            txt_employeePhone.Location = new Point(143, 135);
             txt_employeePhone.Name = "txt_employeePhone";
             txt_employeePhone.Size = new Size(225, 27);
             txt_employeePhone.TabIndex = 24;
             // 
             // lb_employeeName
             // 
-            lb_employeeName.Location = new Point(26, 65);
+            lb_employeeName.Location = new Point(21, 68);
             lb_employeeName.Name = "lb_employeeName";
             lb_employeeName.Size = new Size(116, 25);
             lb_employeeName.TabIndex = 23;
@@ -176,7 +178,7 @@
             // 
             // txt_employeeName
             // 
-            txt_employeeName.Location = new Point(148, 62);
+            txt_employeeName.Location = new Point(143, 65);
             txt_employeeName.Name = "txt_employeeName";
             txt_employeeName.Size = new Size(225, 27);
             txt_employeeName.TabIndex = 22;
@@ -184,7 +186,7 @@
             // lb_employees_manager_title
             // 
             lb_employees_manager_title.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lb_employees_manager_title.Location = new Point(488, 9);
+            lb_employees_manager_title.Location = new Point(483, 12);
             lb_employees_manager_title.Name = "lb_employees_manager_title";
             lb_employees_manager_title.Size = new Size(260, 42);
             lb_employees_manager_title.TabIndex = 21;
@@ -210,7 +212,7 @@
             // 
             groupBox_listEmployee.Controls.Add(dgv_listEmployee);
             groupBox_listEmployee.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            groupBox_listEmployee.Location = new Point(23, 232);
+            groupBox_listEmployee.Location = new Point(18, 235);
             groupBox_listEmployee.Name = "groupBox_listEmployee";
             groupBox_listEmployee.Size = new Size(848, 401);
             groupBox_listEmployee.TabIndex = 20;
@@ -219,19 +221,29 @@
             // 
             // dateTimePicker_employees_manager_startDate
             // 
-            dateTimePicker_employees_manager_startDate.Location = new Point(528, 60);
+            dateTimePicker_employees_manager_startDate.Location = new Point(523, 63);
             dateTimePicker_employees_manager_startDate.Name = "dateTimePicker_employees_manager_startDate";
             dateTimePicker_employees_manager_startDate.Size = new Size(343, 27);
             dateTimePicker_employees_manager_startDate.TabIndex = 40;
             // 
             // lb_employees_manager_startDate
             // 
-            lb_employees_manager_startDate.Location = new Point(406, 62);
+            lb_employees_manager_startDate.Location = new Point(401, 65);
             lb_employees_manager_startDate.Name = "lb_employees_manager_startDate";
             lb_employees_manager_startDate.Size = new Size(116, 25);
             lb_employees_manager_startDate.TabIndex = 41;
             lb_employees_manager_startDate.Text = "Ngày vào làm :";
             lb_employees_manager_startDate.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btn_roles_manager
+            // 
+            btn_roles_manager.Location = new Point(220, 203);
+            btn_roles_manager.Name = "btn_roles_manager";
+            btn_roles_manager.Size = new Size(148, 28);
+            btn_roles_manager.TabIndex = 42;
+            btn_roles_manager.Text = "Quản lý quyền";
+            btn_roles_manager.UseVisualStyleBackColor = true;
+            btn_roles_manager.Click += btn_roles_manager_Click;
             // 
             // frm_employees_manager
             // 
@@ -239,6 +251,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1178, 645);
+            Controls.Add(btn_roles_manager);
             Controls.Add(lb_employees_manager_startDate);
             Controls.Add(dateTimePicker_employees_manager_startDate);
             Controls.Add(lb_employees_manager_search);
@@ -288,5 +301,6 @@
         private GroupBox groupBox_listEmployee;
         private DateTimePicker dateTimePicker_employees_manager_startDate;
         private Label lb_employees_manager_startDate;
+        private Button btn_roles_manager;
     }
 }

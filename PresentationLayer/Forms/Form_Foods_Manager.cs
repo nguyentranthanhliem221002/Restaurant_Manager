@@ -31,7 +31,7 @@ namespace PresentationLayer
         private void LoadFoodData()
         {
             var foodList = foodService.GetAllFoods()?.ToList() ?? new List<Food>();
-            dgv_listFood.DataSource = foodList; 
+            dgv_listFood.DataSource = foodList;
         }
 
         private void LoadCategoryData()
@@ -44,7 +44,7 @@ namespace PresentationLayer
 
         private void frm_foods_manager_Load(object sender, EventArgs e)
         {
-            LoadFoodData();    
+            LoadFoodData();
 
             LoadCategoryData();
         }
@@ -172,13 +172,14 @@ namespace PresentationLayer
 
         private void btn_categories_manager_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            using (var frmCategoriesManager = _serviceProvider.GetRequiredService<frm_categories_manager>())
+            var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
+            if (frmMain != null)
             {
-                frmCategoriesManager.ShowDialog();
+                var frmCategoriesManager = _serviceProvider.GetRequiredService<frm_categories_manager>();
+                frmMain.OpenChildForm(frmCategoriesManager);
             }
-
-            this.Show();  // Hiển thị lại form chính khi frm_foods_manager đóng
         }
+
+
     }
 }

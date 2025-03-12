@@ -72,6 +72,7 @@ namespace PresentationLayer
                 options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
             // Đăng ký Repository
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IFoodRepository, FoodRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -81,6 +82,7 @@ namespace PresentationLayer
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
             // Đăng ký Service
+            services.AddScoped<RoleService>();
             services.AddScoped<FoodService>();
             services.AddScoped<CategoryService>();
             services.AddScoped<CustomerService>();
@@ -90,7 +92,8 @@ namespace PresentationLayer
             services.AddScoped<OrderDetailService>();
 
             // Đăng ký Forms với DI
-            services.AddTransient<frm_login>(); // Form login
+            services.AddTransient<frm_roles_manager>(); 
+            services.AddTransient<frm_login>(); 
             services.AddTransient<frm_main>();
             services.AddTransient<frm_foods_manager>();
             services.AddTransient<frm_categories_manager>();
