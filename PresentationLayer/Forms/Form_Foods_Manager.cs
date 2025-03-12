@@ -169,7 +169,6 @@ namespace PresentationLayer
             dgv_listFood.DataSource = searchResult;
         }
 
-
         private void btn_categories_manager_Click(object sender, EventArgs e)
         {
             var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
@@ -180,6 +179,5 @@ namespace PresentationLayer
             }
         }
 
-
-    }
+}
 }

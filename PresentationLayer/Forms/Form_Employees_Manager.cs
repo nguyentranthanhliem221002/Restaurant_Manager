@@ -194,10 +194,10 @@ namespace PresentationLayer
             var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
             if (frmMain != null)
             {
-                var frmRolesManager = serviceProvider.GetRequiredService<frm_categories_manager>();
+                var frmRolesManager = serviceProvider.GetRequiredService<frm_roles_manager>();
                 frmMain.OpenChildForm(frmRolesManager);
             }
         }
-      
+
     }
 }

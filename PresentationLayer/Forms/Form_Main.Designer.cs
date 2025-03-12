@@ -137,7 +137,6 @@ partial class frm_main
         panel_container.Name = "panel_container";
         panel_container.Size = new Size(1178, 645);
         panel_container.TabIndex = 1;
-        panel_container.Paint += panel_container_Paint;
         // 
         // panel_nav
         // 
@@ -160,6 +159,7 @@ partial class frm_main
         btn_user.Size = new Size(83, 76);
         btn_user.TabIndex = 2;
         btn_user.UseVisualStyleBackColor = false;
+        btn_user.Click += btn_user_Click;
         // 
         // lb_main_title
         // 

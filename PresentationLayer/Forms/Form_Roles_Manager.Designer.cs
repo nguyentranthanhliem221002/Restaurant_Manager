@@ -54,7 +54,7 @@
             groupBox_listRole.Size = new Size(848, 401);
             groupBox_listRole.TabIndex = 68;
             groupBox_listRole.TabStop = false;
-            groupBox_listRole.Text = "Danh sách loại món ăn :";
+            groupBox_listRole.Text = "Danh sách quyền:";
             // 
             // dgv_listRole
             // 

@@ -86,60 +86,6 @@ namespace PresentationLayer
 
         }
 
-        //// Quản lý món ăn
-        //private void btn_foods_manager_Click(object sender, EventArgs e)
-        //{
-        //var frmFoodsManager = _serviceProvider.GetRequiredService<frm_foods_manager>();
-        //OpenChildForm(frmFoodsManager);
-        //}
-
-        //// Quản lý bàn
-        //private void btn_tables_Click(object sender, EventArgs e)
-        //{
-        //var frmTablesManager = _serviceProvider.GetRequiredService<frm_tables_manager>();
-        //OpenChildForm(frmTablesManager);
-        //}
-
-        //// Quản lý nhân viên
-        //private void btn_employees_manager_Click(object sender, EventArgs e)
-        //{
-        //var frmEmployeesManager = _serviceProvider.GetRequiredService<frm_employees_manager>();
-        //OpenChildForm(frmEmployeesManager);
-        //}
-
-        //// Quản lý khách hàng (nếu có)
-        //private void btn_customers_manager_Click(object sender, EventArgs e)
-        //{
-        //var frmCustomersManager = _serviceProvider.GetRequiredService<frm_customers_manager>();
-        //OpenChildForm(frmCustomersManager);
-        //}
-
-        // Thoát ứng dụng
-        //private void btn_exit_Click(object sender, EventArgs e)
-        //{
-        //DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-        //    if (cmd == DialogResult.Yes)
-        //    {
-        //        Application.Exit();
-        //    }
-    //}
-
-    private void panel_container_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-
-
-
-        private void btn_user_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            var frm_login = new frm_login(_serviceProvider) { Owner = this };
-
-            frm_login.FormClosed += (s, args) => this.Show();
-            frm_login.ShowDialog();
-        }
 
         private void btn_exit_Click(object sender, EventArgs e)
         {
@@ -148,6 +94,15 @@ namespace PresentationLayer
             {
                 Application.Exit();
             }
+        }
+
+        private void btn_user_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            var frm_login = new frm_login(_serviceProvider) { Owner = this };
+
+            frm_login.FormClosed += (s, args) => this.Show();
+            frm_login.ShowDialog();
         }
     }
 }
