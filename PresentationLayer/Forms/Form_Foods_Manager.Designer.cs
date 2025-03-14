@@ -165,6 +165,7 @@
             btn_foodImage.TabIndex = 10;
             btn_foodImage.Text = "Tải lên";
             btn_foodImage.UseVisualStyleBackColor = true;
+            btn_foodImage.Click += btn_foodImage_Click;
             // 
             // btn_foodAdd
             // 

@@ -10,12 +10,12 @@ namespace PresentationLayer.Forms
 {
     public partial class frm_roles_manager : Form
     {
-        private readonly RoleService roleService;
+        private readonly RoleService _roleService;
 
-        public frm_roles_manager(RoleService service)
+        public frm_roles_manager(RoleService roleService)
         {
             InitializeComponent();
-            this.roleService = service;
+            _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
         }
 
         private void frm_roles_manager_Load(object sender, EventArgs e)
@@ -25,7 +25,7 @@ namespace PresentationLayer.Forms
 
         private void LoadRoleData()
         {
-            var roles = roleService.GetAllRoles()?.ToList() ?? new List<Role>();
+            var roles = _roleService.GetAllRoles()?.ToList() ?? new List<Role>();
             dgv_listRole.DataSource = roles;
         }
 
@@ -40,7 +40,7 @@ namespace PresentationLayer.Forms
             }
 
             Role role = new Role { Name = roleName };
-            roleService.AddRole(role);
+            _roleService.AddRole(role);
             LoadRoleData();
             MessageBox.Show("Thêm vai trò thành công!", "Thông báo");
 
@@ -60,7 +60,7 @@ namespace PresentationLayer.Forms
 
             if (result == DialogResult.Yes)
             {
-                roleService.DeleteRole(roleId);
+                _roleService.DeleteRole(roleId);
                 LoadRoleData();
                 MessageBox.Show("Xóa vai trò thành công!", "Thông báo");
             }
@@ -100,7 +100,7 @@ namespace PresentationLayer.Forms
             string roleName = txt_roleName.Text.Trim();
 
             Role role = new Role { Id = roleId, Name = roleName };
-            roleService.UpdateRole(role);
+            _roleService.UpdateRole(role);
             LoadRoleData();
             MessageBox.Show("Cập nhật vai trò thành công!", "Thông báo");
 
@@ -111,7 +111,7 @@ namespace PresentationLayer.Forms
         private void btn_categorySearch_Click(object sender, EventArgs e)
         {
             string keyword = txt_roles_manager_search.Text.Trim().ToLower();
-            var roles = roleService.GetAllRoles()?.ToList() ?? new List<Role>();
+            var roles = _roleService.GetAllRoles()?.ToList() ?? new List<Role>();
 
             var searchResult = string.IsNullOrEmpty(keyword)
                 ? roles

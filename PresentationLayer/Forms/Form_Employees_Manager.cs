@@ -17,29 +17,29 @@ namespace PresentationLayer
 {
     public partial class frm_employees_manager : Form
     {
-        private EmployeeService employeeService;
-        private RoleService roleService; // Thêm RoleService
-        private readonly IServiceProvider serviceProvider;  // Nhận từ DI
+        private EmployeeService _employeeService;
+        private RoleService _roleService; // Thêm RoleService
+        private readonly IServiceProvider _serviceProvider;  // Nhận từ DI
 
 
         public frm_employees_manager(EmployeeService employeeService, RoleService roleService, IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            this.employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
-            this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
-            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this._employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
+            this._roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
 
 
         private void LoadEmployeeData()
         {
-            var employees = employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>(); // Đảm bảo danh sách không null
+            var employees = _employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>(); // Đảm bảo danh sách không null
             dgv_listEmployee.DataSource = employees;
         }
         private void LoadRoleData()
         {
-            var roleList = roleService.GetAllRoles()?.ToList() ?? new List<Role>();
+            var roleList = _roleService.GetAllRoles()?.ToList() ?? new List<Role>();
             comboBox_listLevel.DataSource = roleList;
             comboBox_listLevel.DisplayMember = "Name";
             comboBox_listLevel.ValueMember = "Id";
@@ -72,7 +72,7 @@ namespace PresentationLayer
                 DateOfJoining = dateOfJoining
             };
 
-            employeeService.AddEmployee(employee);
+            _employeeService.AddEmployee(employee);
             LoadEmployeeData();
             MessageBox.Show("Thêm nhân viên thành công!", "Thông báo");
 
@@ -100,7 +100,7 @@ namespace PresentationLayer
 
             if (result == DialogResult.Yes)
             {
-                employeeService.DeleteEmployee(employeeId);
+                _employeeService.DeleteEmployee(employeeId);
                 LoadEmployeeData();
                 MessageBox.Show("Xóa nhân viên thành công!", "Thông báo");
             }
@@ -161,7 +161,7 @@ namespace PresentationLayer
                 DateOfJoining = dateOfJoining
             };
 
-            employeeService.UpdateEmployee(employee);
+            _employeeService.UpdateEmployee(employee);
             LoadEmployeeData();
             MessageBox.Show("Cập nhật nhân viên thành công!", "Thông báo");
 
@@ -174,7 +174,7 @@ namespace PresentationLayer
         private void btn_employeeSearch_Click(object sender, EventArgs e)
         {
             string keyword = txt_employees_manager_search.Text.Trim().ToLower();
-            var employees = employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>();
+            var employees = _employeeService.GetAllEmployees()?.ToList() ?? new List<Employee>();
 
             var searchResult = string.IsNullOrEmpty(keyword)
                 ? employees
@@ -194,7 +194,7 @@ namespace PresentationLayer
             var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
             if (frmMain != null)
             {
-                var frmRolesManager = serviceProvider.GetRequiredService<frm_roles_manager>();
+                var frmRolesManager = _serviceProvider.GetRequiredService<frm_roles_manager>();
                 frmMain.OpenChildForm(frmRolesManager);
             }
         }

@@ -27,6 +27,16 @@ namespace DataLayer.Repository
             return _context.Foods.Include(f => f.Category).FirstOrDefault(f => f.Id == id);
         }
 
+        // Lấy danh sách món ăn theo loại
+        public IEnumerable<Food> GetFoodsByCategory(int categoryId)
+        {
+            return _context.Foods
+                .Include(f => f.Category)
+                .Where(f => f.CategoryId == categoryId)
+                .AsEnumerable();
+        }
+
+
         // Thêm món ăn mới
         public void AddFood(Food food)
         {

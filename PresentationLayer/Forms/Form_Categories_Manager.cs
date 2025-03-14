@@ -9,17 +9,17 @@ namespace PresentationLayer.Forms
 {
     public partial class frm_categories_manager : Form
     {
-        private readonly CategoryService categoryService;
+        private readonly CategoryService _categoryService;
 
-        public frm_categories_manager(CategoryService category)
+        public frm_categories_manager(CategoryService categoryService)
         {
             InitializeComponent();
-            this.categoryService = category;
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
 
         private void LoadCategoryData()
         {
-            var categoryList = categoryService.GetAllCategories()?.ToList() ?? new List<Category>();
+            var categoryList = _categoryService.GetAllCategories()?.ToList() ?? new List<Category>();
             dgv_listCategory.DataSource = categoryList;
         }
 
@@ -41,7 +41,7 @@ namespace PresentationLayer.Forms
                 Name = txt_categoryName.Text
             };
 
-            categoryService.AddCategory(category);
+            _categoryService.AddCategory(category);
             LoadCategoryData();
             MessageBox.Show("Thêm danh mục thành công!", "Thông báo");
 
@@ -63,7 +63,7 @@ namespace PresentationLayer.Forms
 
             if (result == DialogResult.Yes)
             {
-                categoryService.DeleteCategory(categoryId);
+                _categoryService.DeleteCategory(categoryId);
                 LoadCategoryData();
                 MessageBox.Show("Xóa danh mục thành công!", "Thông báo");
             }
@@ -107,7 +107,7 @@ namespace PresentationLayer.Forms
                 Name = txt_categoryName.Text
             };
 
-            categoryService.UpdateCategory(category);
+            _categoryService.UpdateCategory(category);
             LoadCategoryData();
             MessageBox.Show("Cập nhật danh mục thành công!", "Thông báo");
 
@@ -118,7 +118,7 @@ namespace PresentationLayer.Forms
         private void btn_categorySearch_Click(object sender, EventArgs e)
         {
             string keyword = txt_categories_manager_search.Text.Trim().ToLower();
-            var categories = categoryService.GetAllCategories()?.ToList() ?? new List<Category>();
+            var categories = _categoryService.GetAllCategories()?.ToList() ?? new List<Category>();
 
             var searchResult = string.IsNullOrEmpty(keyword)
                 ? categories

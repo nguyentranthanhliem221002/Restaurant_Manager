@@ -10,5 +10,6 @@ namespace DataLayer.IRepository
         void AddFood(Food food);   // Thêm món ăn mới
         void UpdateFood(Food food); // Cập nhật món ăn
         void DeleteFood(int id);   // Xóa món ăn
+        IEnumerable<Food> GetFoodsByCategory(int categoryId); // Lấy danh sách món ăn theo loại
     }
 }

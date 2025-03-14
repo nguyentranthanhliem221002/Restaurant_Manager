@@ -165,12 +165,12 @@ partial class frm_main
         // 
         lb_main_title.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
         lb_main_title.ForeColor = Color.White;
-        lb_main_title.Location = new Point(513, 15);
+        lb_main_title.Location = new Point(12, 15);
         lb_main_title.Name = "lb_main_title";
-        lb_main_title.Size = new Size(260, 42);
+        lb_main_title.Size = new Size(170, 42);
         lb_main_title.TabIndex = 1;
         lb_main_title.Text = "Quản lý nhà hàng";
-        lb_main_title.TextAlign = ContentAlignment.MiddleCenter;
+        lb_main_title.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // btn_exit
         // 

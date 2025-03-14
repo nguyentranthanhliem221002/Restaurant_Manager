@@ -92,6 +92,7 @@ namespace PresentationLayer
             services.AddScoped<OrderDetailService>();
 
             // Đăng ký Forms với DI
+            services.AddTransient<frm_foods>();
             services.AddTransient<frm_roles_manager>(); 
             services.AddTransient<frm_login>(); 
             services.AddTransient<frm_main>();

@@ -24,6 +24,10 @@ namespace BusinessLayer.Service
         {
             return _foodRepository.GetFoodById(id);
         }
+        public IEnumerable<Food> GetFoodByCategory(int categoryId)
+        {
+            return _foodRepository.GetFoodsByCategory(categoryId);
+        }
 
         public void AddFood(Food food)
         {
