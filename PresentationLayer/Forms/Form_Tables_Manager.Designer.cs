@@ -31,7 +31,11 @@
             groupBox_list_table = new GroupBox();
             flowLayoutPanel_list_table = new FlowLayoutPanel();
             groupBox_tableInfo = new GroupBox();
-            listView1 = new ListView();
+            lb_statuss = new Label();
+            lb_numberTablee = new Label();
+            lb_numberTable = new Label();
+            label_status = new Label();
+            listView_listTableChoose = new ListView();
             btn_pay = new Button();
             btn_print_bill = new Button();
             groupBox_list_option_Pay = new GroupBox();
@@ -41,10 +45,6 @@
             s = new Label();
             label2 = new Label();
             lb_total = new Label();
-            label_status = new Label();
-            lb_numberTable = new Label();
-            lb_numberTablee = new Label();
-            lb_statuss = new Label();
             groupBox_list_table.SuspendLayout();
             groupBox_tableInfo.SuspendLayout();
             groupBox_list_option_Pay.SuspendLayout();
@@ -76,7 +76,7 @@
             groupBox_tableInfo.Controls.Add(lb_numberTablee);
             groupBox_tableInfo.Controls.Add(lb_numberTable);
             groupBox_tableInfo.Controls.Add(label_status);
-            groupBox_tableInfo.Controls.Add(listView1);
+            groupBox_tableInfo.Controls.Add(listView_listTableChoose);
             groupBox_tableInfo.Location = new Point(710, 57);
             groupBox_tableInfo.Name = "groupBox_tableInfo";
             groupBox_tableInfo.Size = new Size(429, 375);
@@ -84,15 +84,47 @@
             groupBox_tableInfo.TabStop = false;
             groupBox_tableInfo.Text = "Thông tin bàn ăn :";
             // 
-            // listView1
+            // lb_statuss
             // 
-            listView1.Dock = DockStyle.Fill;
-            listView1.Location = new Point(3, 23);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(423, 349);
-            listView1.TabIndex = 4;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            lb_statuss.Location = new Point(136, 71);
+            lb_statuss.Name = "lb_statuss";
+            lb_statuss.Size = new Size(124, 25);
+            lb_statuss.TabIndex = 8;
+            lb_statuss.Text = "???";
+            // 
+            // lb_numberTablee
+            // 
+            lb_numberTablee.Location = new Point(136, 34);
+            lb_numberTablee.Name = "lb_numberTablee";
+            lb_numberTablee.Size = new Size(124, 25);
+            lb_numberTablee.TabIndex = 7;
+            lb_numberTablee.Text = "???";
+            // 
+            // lb_numberTable
+            // 
+            lb_numberTable.Location = new Point(6, 34);
+            lb_numberTable.Name = "lb_numberTable";
+            lb_numberTable.Size = new Size(124, 25);
+            lb_numberTable.TabIndex = 6;
+            lb_numberTable.Text = "Số bàn : ";
+            // 
+            // label_status
+            // 
+            label_status.Location = new Point(6, 71);
+            label_status.Name = "label_status";
+            label_status.Size = new Size(124, 25);
+            label_status.TabIndex = 5;
+            label_status.Text = "Trạng thái : ";
+            // 
+            // listView_listTableChoose
+            // 
+            listView_listTableChoose.Dock = DockStyle.Fill;
+            listView_listTableChoose.Location = new Point(3, 23);
+            listView_listTableChoose.Name = "listView_listTableChoose";
+            listView_listTableChoose.Size = new Size(423, 349);
+            listView_listTableChoose.TabIndex = 4;
+            listView_listTableChoose.UseCompatibleStateImageBehavior = false;
+            listView_listTableChoose.View = View.Details;
             // 
             // btn_pay
             // 
@@ -188,38 +220,6 @@
             lb_total.Text = "Tổng tiền : ";
             lb_total.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label_status
-            // 
-            label_status.Location = new Point(6, 71);
-            label_status.Name = "label_status";
-            label_status.Size = new Size(124, 25);
-            label_status.TabIndex = 5;
-            label_status.Text = "Trạng thái : ";
-            // 
-            // lb_numberTable
-            // 
-            lb_numberTable.Location = new Point(6, 34);
-            lb_numberTable.Name = "lb_numberTable";
-            lb_numberTable.Size = new Size(124, 25);
-            lb_numberTable.TabIndex = 6;
-            lb_numberTable.Text = "Số bàn : ";
-            // 
-            // lb_numberTablee
-            // 
-            lb_numberTablee.Location = new Point(136, 34);
-            lb_numberTablee.Name = "lb_numberTablee";
-            lb_numberTablee.Size = new Size(124, 25);
-            lb_numberTablee.TabIndex = 7;
-            lb_numberTablee.Text = "???";
-            // 
-            // lb_statuss
-            // 
-            lb_statuss.Location = new Point(136, 71);
-            lb_statuss.Name = "lb_statuss";
-            lb_statuss.Size = new Size(124, 25);
-            lb_statuss.TabIndex = 8;
-            lb_statuss.Text = "???";
-            // 
             // frm_tables_manager
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -256,7 +256,7 @@
         private RadioButton radioButton_option_momo;
         private RadioButton radioButton_option_bank;
         private Label s;
-        private ListView listView1;
+        private ListView listView_listTableChoose;
         private FlowLayoutPanel flowLayoutPanel_list_table;
         private Label label2;
         private Label lb_total;

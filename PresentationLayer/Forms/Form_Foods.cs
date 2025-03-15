@@ -22,65 +22,79 @@ namespace PresentationLayer
 
             tabMenu.SelectedIndexChanged -= TabControl_SelectedIndexChanged;
             tabMenu.SelectedIndexChanged += TabControl_SelectedIndexChanged;
+            dgv_listFoodInfo.CellValueChanged += dataGridView1_CellContentClick;
 
             InitializeTabs();
         }
 
         private void InitializeTabs()
         {
-            tabMenu.TabPages.Clear();
             var categories = _categoryService.GetAllCategories()?.ToList() ?? new List<Category>();
 
-            foreach (var category in categories)
+            if (tabMenu.TabPages.Count < categories.Count)
             {
-                var tabPage = new TabPage(category.Name) { Tag = category.Id };
-                var flowLayoutPanel = new FlowLayoutPanel
-                {
-                    Dock = DockStyle.None,
-                    Width = 777,
-                    Height = 777,
-                    AutoScroll = true, // Duyệt danh sách món ăn nếu quá nhiều
-                    BackColor = Color.White
-                };
+                MessageBox.Show("Số lượng TabPage không đủ, hãy thêm đủ TabPage trong giao diện thiết kế!",
+                                "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                tabPage.Controls.Add(flowLayoutPanel);
-                tabMenu.TabPages.Add(tabPage);
+            for (int i = 0; i < categories.Count; i++)
+            {
+                var category = categories[i];
+                var tabPage = tabMenu.TabPages[i];
+
+                tabPage.Text = category.Name;
+                tabPage.Tag = category.Id; // Gán ID danh mục vào Tag để dùng sau
+
+                // Kiểm tra nếu FlowLayoutPanel đã tồn tại, nếu chưa thì thêm mới
+                var flowLayoutPanel = tabPage.Controls.OfType<FlowLayoutPanel>().FirstOrDefault();
+                if (flowLayoutPanel == null)
+                {
+                    flowLayoutPanel = new FlowLayoutPanel
+                    {
+                        Size = new Size(666, 666), // Thiết lập kích thước cố định
+                        AutoScroll = true,
+                        BackColor = Color.Turquoise,
+                        Anchor = AnchorStyles.Top | AnchorStyles.Left // Giữ vị trí ở góc trái trên
+                    };
+                    tabPage.Controls.Add(flowLayoutPanel);
+                }
             }
 
             if (tabMenu.TabPages.Count > 0)
             {
                 tabMenu.SelectedIndex = 0;
-                LoadFoodButtons(categories.First().Id);
+                LoadFoodButtons((int)tabMenu.TabPages[0].Tag);
             }
         }
 
+
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabMenu.SelectedTab == null) return;
+            if (tabMenu.SelectedTab == null || tabMenu.SelectedTab.Tag == null)
+                return;
+
             int selectedCategoryId = (int)tabMenu.SelectedTab.Tag;
             LoadFoodButtons(selectedCategoryId);
         }
 
+
         private void LoadFoodButtons(int categoryId)
         {
-            if (_foodService == null)
-            {
-                MessageBox.Show("Lỗi: Không thể tải danh sách món ăn!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             var selectedTab = tabMenu.SelectedTab;
-            if (selectedTab == null || selectedTab.Controls.Count == 0 || !(selectedTab.Controls[0] is FlowLayoutPanel flowLayoutPanel))
-            {
-                return;
-            }
+            if (selectedTab == null) return;
 
-            flowLayoutPanel.Controls.Clear();
+            var flowLayoutPanel = selectedTab.Controls.OfType<FlowLayoutPanel>().FirstOrDefault();
+            if (flowLayoutPanel == null) return;
+
+            flowLayoutPanel.Controls.Clear(); // Xóa các button cũ
+
             var foods = _foodService.GetFoodByCategory(categoryId) ?? new List<Food>();
 
             if (!foods.Any())
             {
-                MessageBox.Show("Không có món ăn nào trong danh mục này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Không có món ăn nào trong danh mục này.", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -98,6 +112,7 @@ namespace PresentationLayer
                     ForeColor = Color.Black
                 };
 
+                // Kiểm tra ảnh món ăn
                 if (!string.IsNullOrEmpty(food.Image) && File.Exists(food.Image))
                 {
                     try
@@ -113,8 +128,11 @@ namespace PresentationLayer
                     }
                 }
 
+                // Hiệu ứng hover
                 btnFood.MouseEnter += (s, e) => btnFood.BackColor = Color.LightBlue;
                 btnFood.MouseLeave += (s, e) => btnFood.BackColor = Color.LightCyan;
+
+                // Sự kiện click
                 btnFood.Click += BtnFood_Click;
 
                 flowLayoutPanel.Controls.Add(btnFood);
@@ -125,11 +143,70 @@ namespace PresentationLayer
         {
             if (sender is Button clickedButton && clickedButton.Tag is int foodId)
             {
-                MessageBox.Show($"Bạn đã chọn món: {clickedButton.Text}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var food = _foodService.GetFoodById(foodId);
+                if (food == null) return;
+
+                // Kiểm tra xem món đã tồn tại trong DataGridView chưa
+                foreach (DataGridViewRow row in dgv_listFoodInfo.Rows)
+                {
+                    if (row.Cells["Name"].Value?.ToString() == food.Name)
+                    {
+                        // Tăng số lượng
+                        int currentQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+                        row.Cells["Quantity"].Value = currentQuantity + 1;
+
+                        // Cập nhật tổng giá
+                        decimal unitPrice = Convert.ToDecimal(row.Cells["Price"].Value);
+                        decimal totalPrice = unitPrice * (currentQuantity + 1);
+                        row.Cells["Total"].Value = totalPrice; // Cập nhật cột Thành tiền
+
+                        return; // Dừng lại, không thêm mới
+                    }
+                }
+
+                // Nếu chưa có, thêm mới vào DataGridView
+                decimal initialTotal = food.Price * 1; // Thành tiền ban đầu = Giá * 1
+                dgv_listFoodInfo.Rows.Add(food.Name, food.Price, 1, initialTotal);
             }
+        }
+
+
+
+        private void listView_listFoodChoose_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Kiểm tra nếu thay đổi ở cột "Quantity"
+            if (e.ColumnIndex == dgv_listFoodInfo.Columns["Quantity"].Index && e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgv_listFoodInfo.Rows[e.RowIndex];
+
+                // Lấy số lượng mới
+                if (int.TryParse(row.Cells["Quantity"].Value?.ToString(), out int quantity) && quantity > 0)
+                {
+                    // Lấy giá món ăn
+                    decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
+
+                    // Tính lại tổng tiền
+                    row.Cells["Total"].Value = price * quantity;
+                }
+                else
+                {
+                    // Nếu nhập sai, đặt lại giá trị hợp lệ
+                    row.Cells["Quantity"].Value = 1;
+                }
+            }
+        }
+        public delegate void OrderSavedEventHandler(int tableId);
+        public event OrderSavedEventHandler OnOrderSaved;
+
+        private void btn_saveOrder_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
