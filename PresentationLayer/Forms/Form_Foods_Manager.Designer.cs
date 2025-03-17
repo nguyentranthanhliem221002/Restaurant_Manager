@@ -71,6 +71,7 @@
             // 
             dgv_listFood.AllowUserToAddRows = false;
             dgv_listFood.AllowUserToDeleteRows = false;
+            dgv_listFood.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_listFood.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_listFood.Dock = DockStyle.Fill;
             dgv_listFood.Location = new Point(3, 26);

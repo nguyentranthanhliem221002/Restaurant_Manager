@@ -41,7 +41,7 @@ namespace PresentationLayer
             if (user != null)
             {
                 MessageBox.Show($"Đăng nhập thành công! Chào {user.UserName}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                string userRole = user.UserRoles.Any() ? user.UserRoles.First().Role.Name : "Employee";
+                string userRole = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "User";
 
                 this.Hide();
                 var mainForm = new frm_main(_serviceProvider, userRole);

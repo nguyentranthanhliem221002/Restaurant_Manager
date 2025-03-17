@@ -32,9 +32,18 @@ namespace PresentationLayer
 
         private void LoadFoodData()
         {
-            var foodList = _foodService.GetAllFoods()?.ToList() ?? new List<Food>();
+            var foodList = _foodService.GetAllFoods()?.Select(f => new
+            {
+                f.Id,
+                f.Name,
+                f.Price,
+                CategoryName = f.Category != null ? f.Category.Name : "Không có danh mục"
+            }).ToList<dynamic>() ?? new List<dynamic>();
+
             dgv_listFood.DataSource = foodList;
+
         }
+
 
         private void LoadCategoryData()
         {

@@ -11,45 +11,52 @@ namespace PresentationLayer
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly string _userRole;
-        private Form currentFormChild; // Giữ form con hiện tại
+        private Form currentFormChild; // Form con hiện tại
 
         public frm_main(IServiceProvider serviceProvider, string userRole)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
-            _userRole = userRole;
+            _userRole = userRole?.Trim() ?? string.Empty; // Xóa khoảng trắng & tránh lỗi null
 
-            this.Load += frm_main_Load;
+            this.Load += FrmMain_Load;
         }
 
-        private void frm_main_Load(object sender, EventArgs e)
+        private void FrmMain_Load(object sender, EventArgs e)
         {
             ApplyRolePermissions();
         }
 
-        // Ẩn nút dựa trên vai trò user
+        /// <summary>
+        /// Kiểm tra quyền dựa trên vai trò của người dùng và ẩn/hiện các button phù hợp.
+        /// </summary>
         private void ApplyRolePermissions()
         {
-            btn_foods_manager.Visible = _userRole != "Employee";
-            btn_employees_manager.Visible = _userRole != "Employee";
+
+            bool isStaff = _userRole.Equals("User", StringComparison.OrdinalIgnoreCase);
+            btn_foods_manager.Visible = !isStaff;
+            btn_employees_manager.Visible = !isStaff;
         }
 
-        // Mở form con trong panel_container
+        /// <summary>
+        /// Mở form con trong panel_container
+        /// </summary>
+        /// <param name="childForm">Form con cần mở</param>
         public void OpenChildForm(Form childForm)
         {
-            if (currentFormChild != null)
+            if (currentFormChild != null && currentFormChild.GetType() == childForm.GetType())
             {
-                currentFormChild.Close();
+                return; // Nếu đang mở đúng form đó thì không làm gì cả
             }
 
+            currentFormChild?.Close();
             currentFormChild = childForm;
-            panel_container.Controls.Clear();
 
+            panel_container.Controls.Clear();
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
 
-            panel_container.Controls.Clear(); // Xóa form cũ trước khi thêm form mới
             panel_container.Controls.Add(childForm);
             panel_container.Tag = childForm;
 
@@ -57,40 +64,26 @@ namespace PresentationLayer
             childForm.Show();
         }
 
-        private void btn_tables_Click(object sender, EventArgs e)
-        {
-            var frmTablesManager = _serviceProvider.GetRequiredService<frm_tables_manager>();
-            OpenChildForm(frmTablesManager);
-        }
+        private void btn_tables_Click(object sender, EventArgs e) =>
+            OpenChildForm(_serviceProvider.GetRequiredService<frm_tables_manager>());
 
-        private void btn_customers_manager_Click(object sender, EventArgs e)
-        {
-            var frmCustomersManager = _serviceProvider.GetRequiredService<frm_customers_manager>();
-            OpenChildForm(frmCustomersManager);
-        }
+        private void btn_customers_manager_Click(object sender, EventArgs e) =>
+            OpenChildForm(_serviceProvider.GetRequiredService<frm_customers_manager>());
 
-        private void btn_foods_manager_Click(object sender, EventArgs e)
-        {
-            var frmFoodsManager = _serviceProvider.GetRequiredService<frm_foods_manager>();
-            OpenChildForm(frmFoodsManager);
-        }
+        private void btn_foods_manager_Click(object sender, EventArgs e) =>
+            OpenChildForm(_serviceProvider.GetRequiredService<frm_foods_manager>());
 
-        private void btn_employees_manager_Click(object sender, EventArgs e)
-        {
-            var frmEmployeesManager = _serviceProvider.GetRequiredService<frm_employees_manager>();
-            OpenChildForm(frmEmployeesManager);
-        }
+        private void btn_employees_manager_Click(object sender, EventArgs e) =>
+            OpenChildForm(_serviceProvider.GetRequiredService<frm_employees_manager>());
 
         private void btn_order_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Chức năng đặt hàng chưa được triển khai!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
 
         private void btn_exit_Click(object sender, EventArgs e)
         {
-            DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (cmd == DialogResult.Yes)
+            if (MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Application.Exit();
             }
@@ -101,8 +94,14 @@ namespace PresentationLayer
             this.Hide();
             var frm_login = new frm_login(_serviceProvider) { Owner = this };
 
-            frm_login.FormClosed += (s, args) => this.Show();
+            frm_login.FormClosed += (s, args) => this.Show(); // Hiện lại form khi login đóng
             frm_login.ShowDialog();
+        }
+
+        private void btn_account_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Chức năng tài khoản chưa được triển khai!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
     }
 }

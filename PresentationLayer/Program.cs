@@ -1,31 +1,14 @@
-﻿//namespace PresentationLayer;
-
-//static class Program
-//{
-//    /// <summary>
-//    ///  The main entry point for the application.
-//    /// </summary>
-//    [STAThread]
-//    static void Main()
-//    {
-//        // To customize application configuration such as set high DPI settings or default font,
-//        // see https://aka.ms/applicationconfiguration.
-//        ApplicationConfiguration.Initialize();
-//        Application.Run(new frm_main());
-//    }    
-//}
-
-using System;
+﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using DataLayer; // Chứa ApplicationDbContext
 using BusinessLayer.Service; // Chứa các Services
 using PresentationLayer.Forms; // Chứa các Forms
 using DataLayer.IRepository;
 using DataLayer.Repository;
-using System.IO;
 
 namespace PresentationLayer
 {
@@ -41,22 +24,29 @@ namespace PresentationLayer
 
             using (var serviceProvider = services.BuildServiceProvider())
             {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    dbContext.Database.Migrate(); // Tạo Database nếu chưa có
-                }
+                // Khởi tạo Database (Migrate + SeedData)
+                InitializeDatabase(serviceProvider);
 
                 // Mở form login trước
                 var loginForm = serviceProvider.GetRequiredService<frm_login>();
-                if (loginForm.ShowDialog() == DialogResult.OK) // Nếu đăng nhập thành công
+                if (loginForm.ShowDialog() == DialogResult.OK)
                 {
-                    // Mở form chính sau khi đăng nhập
-                    Application.Run(serviceProvider.GetRequiredService<frm_main>());
+                    try
+                    {
+                        // Nếu đăng nhập thành công, mở form chính
+                        Application.Run(serviceProvider.GetRequiredService<frm_main>());
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ Error when opening the main form: {ex.Message}");
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Cấu hình dịch vụ và Dependency Injection (DI)
+        /// </summary>
         private static void ConfigureServices(IServiceCollection services)
         {
             // Đọc ConnectionString từ appsettings.json
@@ -93,8 +83,8 @@ namespace PresentationLayer
 
             // Đăng ký Forms với DI
             services.AddTransient<frm_foods>();
-            services.AddTransient<frm_roles_manager>(); 
-            services.AddTransient<frm_login>(); 
+            services.AddTransient<frm_roles_manager>();
+            services.AddTransient<frm_login>();
             services.AddTransient<frm_main>();
             services.AddTransient<frm_foods_manager>();
             services.AddTransient<frm_categories_manager>();
@@ -104,5 +94,35 @@ namespace PresentationLayer
             services.AddTransient<frm_orders_manager>();
             services.AddTransient<frm_orderdetails_manager>();
         }
+
+        /// <summary>
+        /// Khởi tạo database, chạy Migration và SeedData nếu cần
+        /// </summary>
+        private static void InitializeDatabase(ServiceProvider serviceProvider)
+        {
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                try
+                {
+                    dbContext.Database.Migrate();
+                    Console.WriteLine("✅ Database migration completed!");
+
+                    DbInitializer.SeedData(dbContext);
+                    Console.WriteLine("✅ Seeding data completed!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ Error during migration or seeding: {ex.Message}");
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"👉 Inner Exception: {ex.InnerException.Message}");
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

@@ -101,8 +101,8 @@ namespace PresentationLayer.Forms
                 var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
                 if (frmMain != null)
                 {
-                    var frmFoods = _serviceProvider.GetRequiredService<frm_foods>();
-                    frmMain.OpenChildForm(frmFoods);
+                    var frmOrderdetail = _serviceProvider.GetRequiredService<frm_orderdetails_manager>();
+                    frmMain.OpenChildForm(frmOrderdetail);
                 }
             }
             else
@@ -115,13 +115,15 @@ namespace PresentationLayer.Forms
 
         private void btn_pay_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Chức năng thanh toán hiện tại đang bão trì. Vui lòng chờ trong giây lát.");
+            MessageBox.Show("Chức năng thanh toán hiện tại đang bão trì. Vui lòng chờ trong giây lát.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btn_print_bill_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Chức năng in hóa đơn hiện tại đang bão trì. Vui lòng chờ trong giây lát.");
+            MessageBox.Show("Chức năng in hóa đơn hiện tại đang bão trì. Vui lòng chờ trong giây lát.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         
     }
 }
+
+

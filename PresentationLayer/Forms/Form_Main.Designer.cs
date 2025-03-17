@@ -81,6 +81,7 @@ partial class frm_main
         btn_account.TabIndex = 4;
         btn_account.Text = "Tài khoản";
         btn_account.UseVisualStyleBackColor = false;
+        btn_account.Click += btn_account_Click;
         // 
         // btn_order
         // 
