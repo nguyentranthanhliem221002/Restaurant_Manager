@@ -1,5 +1,6 @@
 ﻿using DataLayer.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TransferObject.TransferObject;
 
 namespace DataLayer.Repository
@@ -14,16 +15,14 @@ namespace DataLayer.Repository
         }
 
         // Lấy danh sách danh mục + kèm theo danh sách món ăn
-        public IEnumerable<Category> GetAllCategories()
+        public IQueryable<Category> GetAllCategories()
         {
-            return _context.Categories.Include(c => c.Foods).AsEnumerable();
+            return _context.Categories.Include(c => c.Foods);  // Trả về IQueryable thay vì IEnumerable
         }
 
         // Lấy danh mục theo ID + kèm theo danh sách món ăn
-        public Category GetCategoryById(int id)
-        {
-            return _context.Categories.Include(c => c.Foods).FirstOrDefault(c => c.Id == id);
-        }
+        public Category GetCategoryById(int id) => _context.Categories.Include(c => c.Foods).FirstOrDefault(c => c.Id == id);
+       
 
         // Thêm danh mục mới
         public void AddCategory(Category category)

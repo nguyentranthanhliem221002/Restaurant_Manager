@@ -1,6 +1,5 @@
 ﻿using DataLayer.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using TransferObject.TransferObject;
 
@@ -16,26 +15,22 @@ namespace DataLayer.Repository
         }
 
         // Lấy danh sách món ăn + bao gồm cả danh mục
-        public IEnumerable<Food> GetAllFoods()
+        public IQueryable<Food> GetAllFoods()
         {
-            return _context.Foods.Include(f => f.Category).AsEnumerable();
+            return _context.Foods.Include(f => f.Category);  // Trả về IQueryable thay vì IEnumerable
         }
 
         // Lấy món ăn theo ID + bao gồm cả danh mục
-        public Food GetFoodById(int id)
-        {
-            return _context.Foods.Include(f => f.Category).FirstOrDefault(f => f.Id == id);
-        }
+        public Food GetFoodById(int id) => _context.Foods.Include(f => f.Category).FirstOrDefault(f => f.Id == id);
+      
 
         // Lấy danh sách món ăn theo loại
-        public IEnumerable<Food> GetFoodsByCategory(int categoryId)
+        public IQueryable<Food> GetFoodsByCategory(int categoryId)
         {
             return _context.Foods
                 .Include(f => f.Category)
-                .Where(f => f.CategoryId == categoryId)
-                .AsEnumerable();
+                .Where(f => f.CategoryId == categoryId);  // Trả về IQueryable
         }
-
 
         // Thêm món ăn mới
         public void AddFood(Food food)

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using DataLayer.IRepository;
+using System.Collections.Generic;
 using System.Linq;
-using DataLayer.IRepository;
-using TransferObject.Security; // Import Model Role
+using TransferObject.Security;
 
 namespace DataLayer.Repository
 {
@@ -14,15 +14,9 @@ namespace DataLayer.Repository
             _context = context;
         }
 
-        public IEnumerable<Role> GetAllRoles()
-        {
-            return _context.Roles.ToList();
-        }
+        public IQueryable<Role> GetAllRoles() => _context.Roles;
 
-        public Role GetRoleById(int id)
-        {
-            return _context.Roles.Find(id);
-        }
+        public Role GetRoleById(int id) => _context.Roles.Find(id);
 
         public void AddRole(Role role)
         {

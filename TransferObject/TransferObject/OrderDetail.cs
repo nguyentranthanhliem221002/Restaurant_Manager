@@ -21,7 +21,7 @@ namespace TransferObject.TransferObject
         public Food Food { get; set; }
 
         [Required]
-        public int Quality { get; set; } // Số lượng món ăn
+        public int Quantity { get; set; } // Số lượng món ăn
 
         [Required]
         [Column(TypeName = "decimal(10,3)")]

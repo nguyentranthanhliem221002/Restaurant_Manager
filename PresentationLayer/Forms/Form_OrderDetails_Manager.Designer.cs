@@ -30,11 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_orderdetails_manager));
-            Total = new DataGridViewTextBoxColumn();
-            Price = new DataGridViewTextBoxColumn();
-            Name = new DataGridViewTextBoxColumn();
             dgv_listOrder = new DataGridView();
-            Quantity = new DataGridViewTextBoxColumn();
             btn_saveOrder = new Button();
             groupBox_listOrder = new GroupBox();
             imageList1 = new ImageList(components);
@@ -50,6 +46,12 @@
             tabPage_Drink = new TabPage();
             tabMenu = new TabControl();
             tabPageFood = new TabPage();
+            lb_orderNumber = new Label();
+            Name = new DataGridViewTextBoxColumn();
+            Price = new DataGridViewTextBoxColumn();
+            Quantity = new DataGridViewTextBoxColumn();
+            Total = new DataGridViewTextBoxColumn();
+            ID = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgv_listOrder).BeginInit();
             groupBox_listOrder.SuspendLayout();
             tabPage_SecondOrder.SuspendLayout();
@@ -58,29 +60,11 @@
             tabMenu.SuspendLayout();
             SuspendLayout();
             // 
-            // Total
-            // 
-            Total.HeaderText = "Thành tiền";
-            Total.MinimumWidth = 6;
-            Total.Name = "Total";
-            // 
-            // Price
-            // 
-            Price.HeaderText = "Giá";
-            Price.MinimumWidth = 6;
-            Price.Name = "Price";
-            // 
-            // Name
-            // 
-            Name.HeaderText = "Tên món";
-            Name.MinimumWidth = 6;
-            Name.Name = "Name";
-            // 
             // dgv_listOrder
             // 
             dgv_listOrder.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv_listOrder.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_listOrder.Columns.AddRange(new DataGridViewColumn[] { Name, Price, Quantity, Total });
+            dgv_listOrder.Columns.AddRange(new DataGridViewColumn[] { Name, Price, Quantity, Total, ID });
             dgv_listOrder.Dock = DockStyle.Fill;
             dgv_listOrder.Location = new Point(3, 23);
             dgv_listOrder.Name = "dgv_listOrder";
@@ -89,12 +73,6 @@
             dgv_listOrder.Size = new Size(472, 480);
             dgv_listOrder.TabIndex = 0;
             dgv_listOrder.CellContentClick += dgv_listOrder_CellContentClick;
-            // 
-            // Quantity
-            // 
-            Quantity.HeaderText = "Số lượng";
-            Quantity.MinimumWidth = 6;
-            Quantity.Name = "Quantity";
             // 
             // btn_saveOrder
             // 
@@ -244,12 +222,53 @@
             tabPageFood.TabIndex = 0;
             tabPageFood.Text = "Đồ ăn";
             // 
+            // lb_orderNumber
+            // 
+            lb_orderNumber.AutoSize = true;
+            lb_orderNumber.Location = new Point(682, 6);
+            lb_orderNumber.Name = "lb_orderNumber";
+            lb_orderNumber.Size = new Size(30, 20);
+            lb_orderNumber.TabIndex = 7;
+            lb_orderNumber.Text = "???";
+            lb_orderNumber.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // Name
+            // 
+            Name.HeaderText = "Tên món";
+            Name.MinimumWidth = 6;
+            Name.Name = "Name";
+            // 
+            // Price
+            // 
+            Price.HeaderText = "Giá";
+            Price.MinimumWidth = 6;
+            Price.Name = "Price";
+            // 
+            // Quantity
+            // 
+            Quantity.HeaderText = "Số lượng";
+            Quantity.MinimumWidth = 6;
+            Quantity.Name = "Quantity";
+            // 
+            // Total
+            // 
+            Total.HeaderText = "Thành tiền";
+            Total.MinimumWidth = 6;
+            Total.Name = "Total";
+            // 
+            // ID
+            // 
+            ID.HeaderText = "Id";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            // 
             // frm_orderdetails_manager
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1178, 645);
+            Controls.Add(lb_orderNumber);
             Controls.Add(btn_saveOrder);
             Controls.Add(groupBox_listOrder);
             Controls.Add(tabMenu);
@@ -264,15 +283,11 @@
             tabPage_Drink.ResumeLayout(false);
             tabMenu.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private DataGridViewTextBoxColumn Total;
-        private DataGridViewTextBoxColumn Price;
-        private DataGridViewTextBoxColumn Name;
         private DataGridView dgv_listOrder;
-        private DataGridViewTextBoxColumn Quantity;
         private Button btn_saveOrder;
         private GroupBox groupBox_listOrder;
         private ImageList imageList1;
@@ -288,5 +303,11 @@
         private TabPage tabPage_Drink;
         private TabControl tabMenu;
         private TabPage tabPageFood;
+        private Label lb_orderNumber;
+        private DataGridViewTextBoxColumn Name;
+        private DataGridViewTextBoxColumn Price;
+        private DataGridViewTextBoxColumn Quantity;
+        private DataGridViewTextBoxColumn Total;
+        private DataGridViewTextBoxColumn ID;
     }
 }

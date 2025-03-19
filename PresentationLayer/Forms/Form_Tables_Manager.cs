@@ -13,12 +13,16 @@ namespace PresentationLayer.Forms
     {
         private readonly TableService _tableService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly OrderService _orderService;
 
-        public frm_tables_manager(TableService tableService, IServiceProvider serviceProvider)
+
+        public frm_tables_manager(TableService tableService, IServiceProvider serviceProvider, OrderService orderService)
         {
             InitializeComponent();
             _tableService = tableService ?? throw new ArgumentNullException(nameof(tableService));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+
         }
 
         private void frm_tables_manager_Load(object sender, EventArgs e)
@@ -90,28 +94,32 @@ namespace PresentationLayer.Forms
             Button clickedButton = sender as Button;
             if (clickedButton == null) return;
 
-            int banId = (int)clickedButton.Tag;
+            int tableId = (int)clickedButton.Tag;
             Color currentColor = clickedButton.BackColor;
 
             // Kiểm tra nếu bàn có màu trắng (bàn trống)
             if (currentColor == Color.White)
             {
-                // Mở form `frm_foods`
-               
                 var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
                 if (frmMain != null)
                 {
+                    // Lấy instance của frm_orderdetails_manager từ DI container
                     var frmOrderdetail = _serviceProvider.GetRequiredService<frm_orderdetails_manager>();
+
+                    // Gọi phương thức SetTableId để truyền ID của bàn
+                    frmOrderdetail.SetTableId(tableId);
+
+                    // Mở form chi tiết đặt món
                     frmMain.OpenChildForm(frmOrderdetail);
                 }
             }
             else
             {
-                MessageBox.Show($"Bàn {banId} không trống, không thể đặt món!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Bàn {tableId} không trống, không thể đặt món!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
- 
+
 
         private void btn_pay_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,5 @@
 ﻿using DataLayer.IRepository;
+using System.Linq;
 using TransferObject.TransferObject;
 
 namespace DataLayer.Repository
@@ -12,32 +13,18 @@ namespace DataLayer.Repository
             _context = context;
         }
 
-        // Lấy danh sách tất cả bàn
-        public IEnumerable<Table> GetAllTables()
-        {
-            return _context.Tables.ToList();
-        }
+        public IQueryable<Table> GetAllTables() => _context.Tables;
 
-        // Lấy thông tin bàn theo ID
-        public Table GetTableById(int id)
-        {
-            return _context.Tables.FirstOrDefault(t => t.Id == id);
-        }
+        public Table GetTableById(int id) => _context.Tables.FirstOrDefault(t => t.Id == id);
 
-        // Tìm bàn ăn theo trạng thái
-        public IEnumerable<Table> GetTablesByStatus(TableStatus status)
-        {
-            return _context.Tables.Where(t => t.Status == status).ToList();
-        }
+        public IQueryable<Table> GetTablesByStatus(TableStatus status) => _context.Tables.Where(t => t.Status == status);
 
-        // Thêm bàn mới
         public void AddTable(Table table)
         {
             _context.Tables.Add(table);
             _context.SaveChanges();
         }
 
-        // Cập nhật thông tin bàn
         public void UpdateTable(Table table)
         {
             var existingTable = _context.Tables.Find(table.Id);
@@ -49,7 +36,6 @@ namespace DataLayer.Repository
             }
         }
 
-        // Xóa bàn
         public void DeleteTable(int id)
         {
             var table = _context.Tables.Find(id);
@@ -59,11 +45,10 @@ namespace DataLayer.Repository
                 _context.SaveChanges();
             }
         }
+
         public void SaveChanges()
         {
-            _context.SaveChanges(); // 🔹 Lưu tất cả thay đổi vào DB
+            _context.SaveChanges(); // Lưu tất cả thay đổi vào DB
         }
-
-
     }
 }

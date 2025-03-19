@@ -39,10 +39,7 @@ namespace BusinessLayer.Service
             _orderRepository.DeleteOrder(id);
         }
 
-        public decimal GetTotalRevenue()
-        {
-            return _orderRepository.GetTotalRevenue();
-        }
+
 
         public IEnumerable<Order> GetOrdersByDate(DateTime date)
         {

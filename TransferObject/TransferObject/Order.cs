@@ -11,15 +11,12 @@ namespace TransferObject.TransferObject
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Name { get; set; }  // Tên đơn hàng hoặc người đặt hàng
-
-        [Required]
         public DateTime OrderDate { get; set; } = DateTime.Now; // Mặc định là ngày hiện tại
 
         [Required]
-        [Column(TypeName = "decimal(10,3)")]
-        public decimal Total { get; set; }
+        public int TableId { get; set; }  // Khóa ngoại để liên kết với bảng Table
+        [ForeignKey(nameof(TableId))]
+        public Table Table { get; set; } // Liên kết với đối tượng Table
 
         public List<OrderDetail> OrderDetails { get; set; }
     }

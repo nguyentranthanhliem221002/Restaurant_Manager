@@ -16,9 +16,20 @@ namespace PresentationLayer.Forms
     {
         private readonly FoodService _foodService;
         private readonly CategoryService _categoryService;
+        private int _tableId;
 
         private void frm_orderdetails_manager_Load(object sender, EventArgs e)
         {
+
+        }
+        // Phương thức này sẽ được gọi từ frm_tables_manager
+        public void SetTableId(int tableId)
+        {
+            _tableId = tableId;
+            if (lb_orderNumber != null)
+            {
+                lb_orderNumber.Text = $"Bàn số: {tableId}";
+            }
 
         }
         public frm_orderdetails_manager(FoodService foodService, CategoryService categoryService)
@@ -156,7 +167,7 @@ namespace PresentationLayer.Forms
                 // Kiểm tra xem món đã tồn tại trong DataGridView chưa
                 foreach (DataGridViewRow row in dgv_listOrder.Rows)
                 {
-                    if (row.Cells["Name"].Value?.ToString() == food.Name)
+                    if (row.Cells["Name"].Value?.ToString() == food.Name && Convert.ToInt32(row.Cells["Id"].Value) == foodId)
                     {
                         // Tăng số lượng
                         int currentQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
@@ -171,9 +182,10 @@ namespace PresentationLayer.Forms
                     }
                 }
 
-                // Nếu chưa có, thêm mới vào DataGridView
+                // Nếu món ăn chưa có trong DataGridView, thêm mới
                 decimal initialTotal = food.Price * 1; // Thành tiền ban đầu = Giá * 1
-                dgv_listOrder.Rows.Add(food.Name, food.Price, 1, initialTotal);
+                dgv_listOrder.Rows.Add(food.Name, food.Price, 1, initialTotal, food.Id); // Thêm cột foodId vào
+
             }
         }
   

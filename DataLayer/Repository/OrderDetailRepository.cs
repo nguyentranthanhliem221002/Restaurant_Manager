@@ -1,4 +1,5 @@
 ﻿using DataLayer.IRepository;
+using System.Linq;
 using TransferObject.TransferObject;
 
 namespace DataLayer.Repository
@@ -12,40 +13,25 @@ namespace DataLayer.Repository
             _context = context;
         }
 
-        // Lấy tất cả chi tiết đơn hàng
-        public IEnumerable<OrderDetail> GetAllOrderDetails()
-        {
-            return _context.OrderDetails.ToList();
-        }
+        public IQueryable<OrderDetail> GetAllOrderDetails() => _context.OrderDetails;
 
-        // Lấy danh sách chi tiết đơn hàng theo OrderId
-        public IEnumerable<OrderDetail> GetOrderDetailsByOrderId(int orderId)
-        {
-            return _context.OrderDetails.Where(od => od.OrderId == orderId).ToList();
-        }
+        public IQueryable<OrderDetail> GetOrderDetailsByOrderId(int orderId) => _context.OrderDetails.Where(od => od.OrderId == orderId);
 
-        // Lấy chi tiết đơn hàng theo Id
-        public OrderDetail GetOrderDetailById(int id)
-        {
-            return _context.OrderDetails.Find(id);
-        }
+        public OrderDetail GetOrderDetailById(int id) => _context.OrderDetails.Find(id);
 
-        // Lấy tổng tiền của 1 đơn hàng
         public decimal GetTotalPriceByOrderId(int orderId)
         {
             return _context.OrderDetails
                            .Where(od => od.OrderId == orderId)
-                           .Sum(od => od.Price * od.Quality);
+                           .Sum(od => od.Price * od.Quantity);
         }
 
-        // Thêm chi tiết đơn hàng mới
         public void AddOrderDetail(OrderDetail orderDetail)
         {
             _context.OrderDetails.Add(orderDetail);
             _context.SaveChanges();
         }
 
-        // Cập nhật chi tiết đơn hàng
         public void UpdateOrderDetail(OrderDetail orderDetail)
         {
             var existingOrderDetail = _context.OrderDetails.Find(orderDetail.Id);
@@ -53,13 +39,12 @@ namespace DataLayer.Repository
             {
                 existingOrderDetail.OrderId = orderDetail.OrderId;
                 existingOrderDetail.FoodId = orderDetail.FoodId;
-                existingOrderDetail.Quality = orderDetail.Quality;
+                existingOrderDetail.Quantity = orderDetail.Quantity;
                 existingOrderDetail.Price = orderDetail.Price;
                 _context.SaveChanges();
             }
         }
 
-        // Xóa chi tiết đơn hàng
         public void DeleteOrderDetail(int id)
         {
             var orderDetail = _context.OrderDetails.Find(id);

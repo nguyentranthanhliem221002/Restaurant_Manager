@@ -37,6 +37,8 @@ namespace PresentationLayer
                 f.Id,
                 f.Name,
                 f.Price,
+                f.Image,
+                f.CategoryId,
                 CategoryName = f.Category != null ? f.Category.Name : "Không có danh mục"
             }).ToList<dynamic>() ?? new List<dynamic>();
 

@@ -5,7 +5,7 @@ namespace DataLayer.IRepository
 {
     public interface IRoleRepository
     {
-        IEnumerable<Role> GetAllRoles(); // Lấy danh sách Role
+        IQueryable<Role> GetAllRoles(); // Lấy danh sách Role
         Role GetRoleById(int id); // Lấy Role theo ID
         void AddRole(Role role); // Thêm mới Role
         void UpdateRole(Role role); // Cập nhật Role
