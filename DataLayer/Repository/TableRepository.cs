@@ -50,5 +50,28 @@ namespace DataLayer.Repository
         {
             _context.SaveChanges(); // Lưu tất cả thay đổi vào DB
         }
+        public void UpdateTableStatus(int tableId, TableStatus newStatus)
+        {
+            var table = _context.Tables.Find(tableId);
+            if (table != null)
+            {
+                table.Status = newStatus;
+                _context.SaveChanges();
+            }
+        }
+        public TableStatus GetTableStatus(int tableId)
+        {
+            var table = _context.Tables.Find(tableId);
+            return table != null ? table.Status : TableStatus.Available; // Trả về trạng thái mặc định nếu không tìm thấy
+        }
+        public void MarkTableAsEmpty(int tableId)
+        {
+            var table = _context.Tables.Find(tableId);
+            if (table != null)
+            {
+                table.Status = TableStatus.Available; // Đánh dấu bàn là trống
+                _context.SaveChanges(); // Lưu thay đổi vào database
+            }
+        }
     }
 }

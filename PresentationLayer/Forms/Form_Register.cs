@@ -1,10 +1,10 @@
-﻿using BusinessLayer.Service;
+﻿using System;
+using System.Linq;
+using System.Windows.Forms;
+using BCrypt.Net;
 using DataLayer;
 using TransferObject.Security;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace PresentationLayer
 {
@@ -20,11 +20,13 @@ namespace PresentationLayer
             _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
         }
 
+        // Sự kiện khi người dùng click vào liên kết quay lại trang đăng nhập
         private void linkLabel_register_toLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Close(); // Đóng frm_register để quay lại frm_login
         }
 
+        // Sự kiện khi người dùng click vào nút đăng ký
         private void btn_register_submit_Click(object sender, EventArgs e)
         {
             string username = txt_register_user.Text.Trim();
@@ -46,26 +48,36 @@ namespace PresentationLayer
             }
 
             // Kiểm tra xem username đã tồn tại chưa
-            if (_context.Users.Any(u => u.UserName == username))
+            if (_context.Accounts.Any(a => a.UserName == username))
             {
                 MessageBox.Show("Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            // Mã hóa mật khẩu với BCrypt
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
             // Tạo tài khoản mới
-            var newUser = new User
+            var newAccount = new Account
             {
                 UserName = username,
-                PasswordHash = password // Cần mã hóa mật khẩu thay vì lưu dạng plain text
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password), // Mã hóa mật khẩu
+                Role = UserRole.Customer, // Đảm bảo bạn gán Role đúng
+                UserId = null // Nếu không có UserId, bạn có thể để null
             };
+            try
+            {
+                _context.Accounts.Add(newAccount); // Thêm tài khoản vào cơ sở dữ liệu
+                _context.SaveChanges(); // Lưu thay đổi vào cơ sở dữ liệu
+                MessageBox.Show("Đăng ký tài khoản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close(); // Đóng form đăng ký và quay lại form đăng nhập
+            }
+            catch (Exception ex)
+            {
+                // Kiểm tra inner exception và in ra thông báo lỗi chi tiết
+                MessageBox.Show($"Có lỗi xảy ra khi đăng ký: {ex.Message}\nInner Exception: {ex.InnerException?.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
-
-            MessageBox.Show("Đăng ký tài khoản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Đóng form đăng ký và mở lại form đăng nhập
-            this.Close();
         }
     }
 }

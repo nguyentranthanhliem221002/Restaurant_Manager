@@ -31,9 +31,6 @@
     <Compile Update="Forms\Form_Tables_Manager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Form_Roles_Manager.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Forms\Form_OrderDetails_Manager.resx">

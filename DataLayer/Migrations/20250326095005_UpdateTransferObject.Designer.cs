@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326095005_UpdateTransferObject")]
+    partial class UpdateTransferObject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
@@ -56,7 +59,7 @@ namespace DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            PasswordHash = "$2a$11$fjleDVxjKzkdDquIptmBLeEwpX3WS7TYgrjzrRIcQuGowK9j6cntq",
+                            PasswordHash = "$2a$11$PgHwG8rHFwsbfDt9xjCXTeSE6M/7CDC9FCGsVsYWI9HsdjpONPlT.",
                             Role = "Admin",
                             UserId = 1,
                             UserName = "admin"
@@ -64,7 +67,7 @@ namespace DataLayer.Migrations
                         new
                         {
                             Id = 2,
-                            PasswordHash = "$2a$11$brx067gop3rKgUlrUY9oHOD4JNrf.rWAnt9KnQEohLfQDhOLHsnTO",
+                            PasswordHash = "$2a$11$NpYmPXGltXAwwxCNKB1MUuUUQdldNg/1qfDkdWqqRyfdXR7yssfyK",
                             Role = "Staff",
                             UserId = 2,
                             UserName = "staff"
@@ -72,7 +75,7 @@ namespace DataLayer.Migrations
                         new
                         {
                             Id = 3,
-                            PasswordHash = "$2a$11$3Bh6ReUQ7asOoi0VmaUAM.EPKIu.TdcPS15ilgPNuA9XPYv2mJzNm",
+                            PasswordHash = "$2a$11$RqGoXYkxl5Vh8dFoqc9aPODJcVP118.ZszkgPZiSSvLGt7ybsCefi",
                             Role = "Customer",
                             UserId = 3,
                             UserName = "customer"
@@ -215,8 +218,6 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FoodId");
-
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
@@ -283,7 +284,7 @@ namespace DataLayer.Migrations
                             Email = "admin@example.com",
                             Name = "Admin User",
                             Phone = "0123456789",
-                            DateOfJoining = new DateTime(2025, 3, 26, 14, 17, 32, 379, DateTimeKind.Utc).AddTicks(4125),
+                            DateOfJoining = new DateTime(2025, 3, 26, 9, 50, 4, 749, DateTimeKind.Utc).AddTicks(7035),
                             Role = ""
                         },
                         new
@@ -292,7 +293,7 @@ namespace DataLayer.Migrations
                             Email = "staff@example.com",
                             Name = "Staff User",
                             Phone = "0987654321",
-                            DateOfJoining = new DateTime(2025, 3, 26, 14, 17, 32, 379, DateTimeKind.Utc).AddTicks(4127),
+                            DateOfJoining = new DateTime(2025, 3, 26, 9, 50, 4, 749, DateTimeKind.Utc).AddTicks(7036),
                             Role = ""
                         });
                 });
@@ -301,7 +302,9 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("TransferObject.Security.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -338,19 +341,11 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("TransferObject.TransferObject.OrderDetail", b =>
                 {
-                    b.HasOne("TransferObject.TransferObject.Food", "Food")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TransferObject.TransferObject.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Food");
 
                     b.Navigation("Order");
                 });

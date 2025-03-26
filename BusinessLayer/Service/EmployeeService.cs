@@ -1,5 +1,7 @@
 ﻿using DataLayer.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Data;
 using TransferObject.TransferObject;
 
 namespace BusinessLayer.Service
@@ -36,6 +38,10 @@ namespace BusinessLayer.Service
         public void DeleteEmployee(int id)
         {
             _employeeRepository.DeleteEmployee(id);
+        }
+        public List<string> GetAllRoles()
+        {
+            return _employeeRepository.GetAllRoles();
         }
     }
 }

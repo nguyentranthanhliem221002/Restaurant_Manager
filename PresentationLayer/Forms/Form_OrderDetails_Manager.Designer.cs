@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_orderdetails_manager));
-            dgv_listOrder = new DataGridView();
+            dgv_listOrderDetail = new DataGridView();
             btn_saveOrder = new Button();
-            groupBox_listOrder = new GroupBox();
+            groupBox_listOrderDetail = new GroupBox();
             imageList1 = new ImageList(components);
             button2 = new Button();
             tabPage_SecondOrder = new TabPage();
@@ -50,29 +50,28 @@
             Name = new DataGridViewTextBoxColumn();
             Price = new DataGridViewTextBoxColumn();
             Quantity = new DataGridViewTextBoxColumn();
-            Total = new DataGridViewTextBoxColumn();
+            SubTotal = new DataGridViewTextBoxColumn();
             ID = new DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)dgv_listOrder).BeginInit();
-            groupBox_listOrder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_listOrderDetail).BeginInit();
+            groupBox_listOrderDetail.SuspendLayout();
             tabPage_SecondOrder.SuspendLayout();
             groupBox_drinkInfo.SuspendLayout();
             tabPage_Drink.SuspendLayout();
             tabMenu.SuspendLayout();
             SuspendLayout();
             // 
-            // dgv_listOrder
+            // dgv_listOrderDetail
             // 
-            dgv_listOrder.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgv_listOrder.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_listOrder.Columns.AddRange(new DataGridViewColumn[] { Name, Price, Quantity, Total, ID });
-            dgv_listOrder.Dock = DockStyle.Fill;
-            dgv_listOrder.Location = new Point(3, 23);
-            dgv_listOrder.Name = "dgv_listOrder";
-            dgv_listOrder.RowHeadersWidth = 51;
-            dgv_listOrder.RowTemplate.Height = 29;
-            dgv_listOrder.Size = new Size(472, 480);
-            dgv_listOrder.TabIndex = 0;
-            dgv_listOrder.CellContentClick += dgv_listOrder_CellContentClick;
+            dgv_listOrderDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv_listOrderDetail.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_listOrderDetail.Columns.AddRange(new DataGridViewColumn[] { Name, Price, Quantity, SubTotal, ID });
+            dgv_listOrderDetail.Dock = DockStyle.Fill;
+            dgv_listOrderDetail.Location = new Point(3, 23);
+            dgv_listOrderDetail.Name = "dgv_listOrderDetail";
+            dgv_listOrderDetail.RowHeadersWidth = 51;
+            dgv_listOrderDetail.RowTemplate.Height = 29;
+            dgv_listOrderDetail.Size = new Size(472, 480);
+            dgv_listOrderDetail.TabIndex = 0;
             // 
             // btn_saveOrder
             // 
@@ -86,16 +85,16 @@
             btn_saveOrder.UseVisualStyleBackColor = false;
             btn_saveOrder.Click += btn_saveOrder_Click;
             // 
-            // groupBox_listOrder
+            // groupBox_listOrderDetail
             // 
-            groupBox_listOrder.BackColor = Color.Transparent;
-            groupBox_listOrder.Controls.Add(dgv_listOrder);
-            groupBox_listOrder.Location = new Point(682, 29);
-            groupBox_listOrder.Name = "groupBox_listOrder";
-            groupBox_listOrder.Size = new Size(478, 506);
-            groupBox_listOrder.TabIndex = 5;
-            groupBox_listOrder.TabStop = false;
-            groupBox_listOrder.Text = "Các món ăn đã chọn : ";
+            groupBox_listOrderDetail.BackColor = Color.Transparent;
+            groupBox_listOrderDetail.Controls.Add(dgv_listOrderDetail);
+            groupBox_listOrderDetail.Location = new Point(682, 29);
+            groupBox_listOrderDetail.Name = "groupBox_listOrderDetail";
+            groupBox_listOrderDetail.Size = new Size(478, 506);
+            groupBox_listOrderDetail.TabIndex = 5;
+            groupBox_listOrderDetail.TabStop = false;
+            groupBox_listOrderDetail.Text = "Các món ăn đã chọn : ";
             // 
             // imageList1
             // 
@@ -250,11 +249,11 @@
             Quantity.MinimumWidth = 6;
             Quantity.Name = "Quantity";
             // 
-            // Total
+            // SubTotal
             // 
-            Total.HeaderText = "Thành tiền";
-            Total.MinimumWidth = 6;
-            Total.Name = "Total";
+            SubTotal.HeaderText = "Thành tiền";
+            SubTotal.MinimumWidth = 6;
+            SubTotal.Name = "SubTotal";
             // 
             // ID
             // 
@@ -270,14 +269,14 @@
             ClientSize = new Size(1178, 645);
             Controls.Add(lb_orderNumber);
             Controls.Add(btn_saveOrder);
-            Controls.Add(groupBox_listOrder);
+            Controls.Add(groupBox_listOrderDetail);
             Controls.Add(tabMenu);
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý chi tiết đơn hàng";
             Load += frm_orderdetails_manager_Load;
-            ((System.ComponentModel.ISupportInitialize)dgv_listOrder).EndInit();
-            groupBox_listOrder.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgv_listOrderDetail).EndInit();
+            groupBox_listOrderDetail.ResumeLayout(false);
             tabPage_SecondOrder.ResumeLayout(false);
             groupBox_drinkInfo.ResumeLayout(false);
             tabPage_Drink.ResumeLayout(false);
@@ -287,9 +286,9 @@
         }
 
         #endregion
-        private DataGridView dgv_listOrder;
+        private DataGridView dgv_listOrderDetail;
         private Button btn_saveOrder;
-        private GroupBox groupBox_listOrder;
+        private GroupBox groupBox_listOrderDetail;
         private ImageList imageList1;
         private Button button2;
         private TabPage tabPage_SecondOrder;
@@ -307,7 +306,7 @@
         private DataGridViewTextBoxColumn Name;
         private DataGridViewTextBoxColumn Price;
         private DataGridViewTextBoxColumn Quantity;
-        private DataGridViewTextBoxColumn Total;
+        private DataGridViewTextBoxColumn SubTotal;
         private DataGridViewTextBoxColumn ID;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using BusinessLayer.Service;
@@ -14,7 +15,7 @@ namespace PresentationLayer.Forms
         private readonly TableService _tableService;
         private readonly IServiceProvider _serviceProvider;
         private readonly OrderService _orderService;
-
+        private const string TableImagePath = "D:\\Restaurant_Manager\\Imgs\\img_table.png";
 
         public frm_tables_manager(TableService tableService, IServiceProvider serviceProvider, OrderService orderService)
         {
@@ -22,24 +23,22 @@ namespace PresentationLayer.Forms
             _tableService = tableService ?? throw new ArgumentNullException(nameof(tableService));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
-
         }
 
         private void frm_tables_manager_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Đang load danh sách bàn..."); // Kiểm tra xem có chạy không
+            MessageBox.Show("Đang load danh sách bàn...");
             LoadTables();
         }
 
         private void LoadTables()
         {
-            // Lấy danh sách bàn từ database
             var tables = _tableService.GetAllTables().ToList();
-
-            // Xóa các button cũ trước khi load mới
             flowLayoutPanel_list_table.Controls.Clear();
+            flowLayoutPanel_list_table.Visible = true;
+            flowLayoutPanel_list_table.AutoScroll = true;
 
-            if (tables.Count == 0)
+            if (!tables.Any())
             {
                 MessageBox.Show("Không có bàn nào trong danh sách!");
                 return;
@@ -47,91 +46,154 @@ namespace PresentationLayer.Forms
 
             foreach (var table in tables)
             {
-                ContextMenuStrip contextMenu = new ContextMenuStrip();
-                contextMenu.Items.Add("Xem chi tiết", null, (s, e) => MessageBox.Show("Chi tiết bàn"));
-                contextMenu.Items.Add("Xóa bàn", null, (s, e) => MessageBox.Show("Xóa bàn thành công"));
-                // Tạo button cho từng bàn
-                Button btn_table = new Button
-                {
-                    Width = 100, // Chiều rộng của button
-                    Height = 100, // Chiều cao của button
-                    //Text = $"Bàn {table.Id}\n{table.Name}", // Hiển thị tên bàn
-                    Text = table.Name, // Hiển thị tên bàn
-
-                    Tag = table.Id, // Lưu ID bàn vào tag
-                    BackColor = GetMauTrangThai(table.Status), // Màu theo trạng thái
-                    BackgroundImage = Image.FromFile("D:\\Restaurant_Manager\\Imgs\\img_table.png"),
-                    Font = new Font("Arial", 10, FontStyle.Bold),
-                    ContextMenuStrip = contextMenu // Gán context menu vào button
-
-                };
-
-                // Gán sự kiện Click
-                btn_table.Click += BtnBan_Click;
-
-                // Thêm button vào flowLayoutPanel
-              
-
-                flowLayoutPanel_list_table.Controls.Add(btn_table);
-                flowLayoutPanel_list_table.Visible = true; // Đảm bảo panel hiển thị
-                flowLayoutPanel_list_table.AutoScroll = true; // Bật cuộn nếu cần
+                flowLayoutPanel_list_table.Controls.Add(CreateTableButton(table));
             }
         }
 
-        Color GetMauTrangThai(TableStatus trangThai)
+        private Button CreateTableButton(Table table)
         {
-            return trangThai switch
+            var btn_table = new Button
             {
-                TableStatus.Available => Color.White,       // Bàn trống
-                TableStatus.Occupied => Color.Yellow,       // Bàn đang có khách
-                TableStatus.Reserved => Color.LightGreen,   // Bàn đã đặt trước
-                _ => Color.Gray
+                Width = 100,
+                Height = 100,
+                Text = table.Name,
+                Tag = table.Id,
+                BackColor = GetTableColor(table.Status),
+                Font = new Font("Arial", 10, FontStyle.Bold),
+                ContextMenuStrip = CreateTableContextMenu(table.Id)
             };
+
+            if (File.Exists(TableImagePath))
+            {
+                btn_table.BackgroundImage = Image.FromFile(TableImagePath);
+            }
+
+            btn_table.Click += (sender, e) => HandleTableClick(table.Id);
+            return btn_table;
         }
 
-        private void BtnBan_Click(object sender, EventArgs e)
+        private ContextMenuStrip CreateTableContextMenu(int tableId)
         {
-            Button clickedButton = sender as Button;
-            if (clickedButton == null) return;
-
-            int tableId = (int)clickedButton.Tag;
-            Color currentColor = clickedButton.BackColor;
-
-            // Kiểm tra nếu bàn có màu trắng (bàn trống)
-            if (currentColor == Color.White)
-            {
-                var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
-                if (frmMain != null)
-                {
-                    // Lấy instance của frm_orderdetails_manager từ DI container
-                    var frmOrderdetail = _serviceProvider.GetRequiredService<frm_orderdetails_manager>();
-
-                    // Gọi phương thức SetTableId để truyền ID của bàn
-                    frmOrderdetail.SetTableId(tableId);
-
-                    // Mở form chi tiết đặt món
-                    frmMain.OpenChildForm(frmOrderdetail);
-                }
-            }
-            else
-            {
-                MessageBox.Show($"Bàn {tableId} không trống, không thể đặt món!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("Order", null, (s, e) => OpenOrderForm(tableId));
+            contextMenu.Items.Add("Thông tin bàn ăn", null, (s, e) => ShowTableInfo(tableId));
+            return contextMenu;
         }
 
+        private void HandleTableClick(int tableId)
+        {
+            MessageBox.Show($"Bạn đã chọn bàn có ID: {tableId}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
 
+        private void OpenOrderForm(int tableId)
+        {
+            var existingOrders = _orderService.GetOrderDetailsByTableId(tableId).ToList();
+            var frmMain = Application.OpenForms.OfType<frm_main>().FirstOrDefault();
+            if (frmMain == null) return;
+
+            var frmOrderDetail = _serviceProvider.GetRequiredService<frm_orderdetails_manager>();
+            frmOrderDetail.SetTableId(tableId);
+
+            if (existingOrders.Any())
+            {
+                frmOrderDetail.LoadExistingOrderDetails(existingOrders);
+            }
+
+            frmMain.OpenChildForm(frmOrderDetail);
+        }
+        //private void OpenOrderForm(int tableId)
+        //{
+        //    var frmOrderDetail = _serviceProvider.GetRequiredService<frm_orderdetails_manager>();
+
+        //    // Đặt ID của bàn
+        //    frmOrderDetail.SetTableId(tableId);
+
+        //    // Nếu có đơn hàng cũ, load dữ liệu vào form
+        //    var existingOrders = _orderService.GetOrderDetailsByTableId(tableId).ToList();
+        //    frmOrderDetail.LoadExistingOrderDetails(existingOrders);
+
+        //    // Mở form OrderDetails
+        //    frmOrderDetail.Show();
+        //}
+        public void UpdateTableColor(int tableId, Color color)
+        {
+            var button = flowLayoutPanel_list_table.Controls.OfType<Button>().FirstOrDefault(btn => (int)btn.Tag == tableId);
+            button?.Invoke(new Action(() => button.BackColor = color));
+        }
+
+        public Color GetTableColor(TableStatus status) => status switch
+        {
+            TableStatus.Occupied => Color.Red,
+            TableStatus.Available => Color.Green,
+            TableStatus.Reserved => Color.Orange,
+            _ => Color.Gray
+        };
+
+        private string GetTableStatusText(TableStatus status) => status switch
+        {
+            TableStatus.Occupied => "Đang có khách",
+            TableStatus.Available => "Bàn trống",
+            TableStatus.Reserved => "Đã đặt trước",
+            _ => "Không xác định"
+        };
+
+        private void btn_print_bill_Click(object sender, EventArgs e) => MessageBox.Show("Chức năng in hóa đơn");
 
         private void btn_pay_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Chức năng thanh toán hiện tại đang bão trì. Vui lòng chờ trong giây lát.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var occupiedTable = _tableService.GetAllTables().FirstOrDefault(t => t.Status == TableStatus.Occupied);
+
+            if (occupiedTable == null)
+            {
+                MessageBox.Show("Không có bàn nào có khách để thanh toán.");
+                return;
+            }
+
+            _tableService.UpdateTableStatus(occupiedTable.Id, TableStatus.Available);
+            UpdateTableColor(occupiedTable.Id, Color.Green);
+            _orderService.DeleteOrdersByTableId(occupiedTable.Id);
+
+            listView_listTableChoose.Items.Clear();
+            Application.OpenForms.OfType<frm_orderdetails_manager>().FirstOrDefault()?.ClearOrderDetails();
+
+            MessageBox.Show($"Bàn {occupiedTable.Id} đã thanh toán, trở thành bàn trống.");
         }
 
-        private void btn_print_bill_Click(object sender, EventArgs e)
+        private void ShowTableInfo(int tableId)
         {
-            MessageBox.Show("Chức năng in hóa đơn hiện tại đang bão trì. Vui lòng chờ trong giây lát.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var table = _tableService.GetTableById(tableId);
+            if (table == null)
+            {
+                MessageBox.Show("Không tìm thấy thông tin bàn ăn!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            lb_tableNumber.Text = $"Bàn số: {table.Id}";
+            lb_tableStatus.Text = $"Trạng thái: {GetTableStatusText(table.Status)}";
+            listView_listTableChoose.Items.Clear();
+
+            var orderDetails = _orderService.GetOrderDetailsByTableId(tableId).ToList();
+
+            if (!orderDetails.Any() || table.Status == TableStatus.Available)
+            {
+                MessageBox.Show("Bàn này đã thanh toán hoặc chưa có món ăn nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            decimal total = 0;
+            foreach (var order in orderDetails)
+            {
+                var listItem = new ListViewItem(order.FoodName)
+                {
+                    SubItems = { order.Quantity.ToString(), order.Price.ToString(), (order.Quantity * order.Price).ToString() }
+                };
+                listView_listTableChoose.Items.Add(listItem);
+                total += order.Quantity * order.Price;
+            }
+
+            lb_subTotal.Text = $"Tổng tiền: {total}";
         }
-        
+
+    
     }
 }
-
-

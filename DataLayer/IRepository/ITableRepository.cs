@@ -12,5 +12,9 @@ namespace DataLayer.IRepository
         void UpdateTable(Table table); // Cập nhật thông tin bàn
         void DeleteTable(int id);   // Xóa bàn
         void SaveChanges();
+        void UpdateTableStatus(int tableId, TableStatus newStatus); // Cập nhật trạng thái bàn
+
+        TableStatus GetTableStatus(int tableId); // Lấy trạng thái bàn
+        void MarkTableAsEmpty(int tableId);
     }
 }

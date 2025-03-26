@@ -243,7 +243,6 @@
             btn_roles_manager.TabIndex = 42;
             btn_roles_manager.Text = "Quản lý quyền";
             btn_roles_manager.UseVisualStyleBackColor = true;
-            btn_roles_manager.Click += btn_roles_manager_Click;
             // 
             // frm_employees_manager
             // 

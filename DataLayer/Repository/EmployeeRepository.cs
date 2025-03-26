@@ -1,5 +1,7 @@
 ﻿using DataLayer.IRepository;
+using System.Data;
 using System.Linq;
+using TransferObject.Security;
 using TransferObject.TransferObject;
 
 namespace DataLayer.Repository
@@ -44,5 +46,14 @@ namespace DataLayer.Repository
                 _context.SaveChanges();
             }
         }
+        public List<string> GetAllRoles()
+        {
+            return Enum.GetNames(typeof(UserRole)).ToList();
+        }
+
+
+
+
+
     }
 }

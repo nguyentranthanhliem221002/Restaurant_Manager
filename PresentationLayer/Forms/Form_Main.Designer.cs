@@ -38,6 +38,7 @@ partial class frm_main
         btn_tables = new Button();
         panel_container = new Panel();
         panel_nav = new Panel();
+        lb_roles = new Label();
         btn_user = new Button();
         lb_main_title = new Label();
         btn_exit = new Button();
@@ -142,6 +143,7 @@ partial class frm_main
         // panel_nav
         // 
         panel_nav.BackColor = Color.DarkSlateGray;
+        panel_nav.Controls.Add(lb_roles);
         panel_nav.Controls.Add(btn_user);
         panel_nav.Controls.Add(lb_main_title);
         panel_nav.Controls.Add(btn_exit);
@@ -149,6 +151,16 @@ partial class frm_main
         panel_nav.Name = "panel_nav";
         panel_nav.Size = new Size(1348, 76);
         panel_nav.TabIndex = 2;
+        // 
+        // lb_roles
+        // 
+        lb_roles.AutoSize = true;
+        lb_roles.ForeColor = Color.White;
+        lb_roles.Location = new Point(1080, 28);
+        lb_roles.Name = "lb_roles";
+        lb_roles.Size = new Size(30, 20);
+        lb_roles.TabIndex = 3;
+        lb_roles.Text = "???";
         // 
         // btn_user
         // 
@@ -200,6 +212,7 @@ partial class frm_main
         Text = "Trang chủ";
         panel_sidebar.ResumeLayout(false);
         panel_nav.ResumeLayout(false);
+        panel_nav.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -217,4 +230,5 @@ partial class frm_main
     private Button btn_tables;
     private Label lb_main_title;
     private Button btn_user;
+    private Label lb_roles;
 }

@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using BCrypt.Net;
 using DataLayer;
-using TransferObject.Security;
 using Microsoft.EntityFrameworkCore;
-using BusinessLayer.Service;
-using PresentationLayer.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using TransferObject.Security;
+using TransferObject.TransferObject;
 
 namespace PresentationLayer
 {
     public partial class frm_login : Form
     {
         private readonly ApplicationDbContext _context;
-        private readonly TableService _tableService;
-        private readonly FoodService _foodService;
-        private readonly CategoryService _categoryService;
-        private readonly EmployeeService _employeeService;
         private readonly IServiceProvider _serviceProvider;
 
         public frm_login(IServiceProvider serviceProvider)
@@ -24,48 +20,66 @@ namespace PresentationLayer
             InitializeComponent();
             _serviceProvider = serviceProvider;
             _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
-            _tableService = _serviceProvider.GetRequiredService<TableService>();
-            _foodService = _serviceProvider.GetRequiredService<FoodService>();
-            _categoryService = _serviceProvider.GetRequiredService<CategoryService>();
-            _employeeService = _serviceProvider.GetRequiredService<EmployeeService>();
         }
-
 
         private void btn_login_submit_Click(object sender, EventArgs e)
         {
-            string username = txt_login_user.Text.Trim();
+            string userName = txt_login_user.Text.Trim();
             string password = txt_login_password.Text.Trim();
 
-            User user = AuthenticateUser(username, password);
+            Account account = AuthenticateUser(userName, password);
 
-            if (user != null)
+            if (account != null)
             {
-                MessageBox.Show($"Đăng nhập thành công! Chào {user.UserName}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                string userRole = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "User";
+                // Gán UserId vào SessionManager
+                SessionManager.CurrentUserId = account.Id;
 
-                this.Hide();
-                var mainForm = new frm_main(_serviceProvider, userRole);
-                mainForm.ShowDialog();
-                this.Show();
+                // Kiểm tra Role nếu là enum
+                if (account.Role == UserRole.Admin || account.Role == UserRole.Staff)
+                {
+                    MessageBox.Show($"Đăng nhập thành công! UserId: {SessionManager.CurrentUserId}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Mở form chính và truyền Role vào
+                    var mainForm = new frm_main(_serviceProvider, account.Role.ToString());
+                    this.Hide();
+                    mainForm.ShowDialog();
+                    this.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Bạn không có quyền truy cập!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             else
             {
-                MessageBox.Show("Đăng nhập thất bại. Kiểm tra lại tài khoản và mật khẩu.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private User AuthenticateUser(string username, string password)
+
+        private Account AuthenticateUser(string userName, string password)
         {
-            return _context.Users
-                           .Include(u => u.UserRoles)
-                           .ThenInclude(ur => ur.Role)
-                           .FirstOrDefault(u => u.UserName == username && u.PasswordHash == password);
+            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
+            {
+                return null; // Tránh lỗi nếu đầu vào rỗng
+            }
+
+            var account = _context.Accounts
+                                  .AsNoTracking() // Tăng hiệu suất, tránh tracking không cần thiết
+                                  .FirstOrDefault(a => a.UserName == userName);
+
+            if (account != null && BCrypt.Net.BCrypt.Verify(password, account.PasswordHash))
+            {
+                return account;
+            }
+
+            return null;
         }
 
-        private void btn_exit_Click(object sender, EventArgs e)
+
+        private async void btn_exit_Click(object sender, EventArgs e)
         {
-            DialogResult cmd = MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (cmd == DialogResult.Yes)
+            if (MessageBox.Show("Bạn có muốn thoát phần mềm không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Application.Exit();
             }

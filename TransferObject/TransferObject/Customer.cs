@@ -1,23 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TransferObject.Security;
 
 namespace TransferObject.TransferObject
 {
-    public class Customer
+    public class Customer : User
     {
         public Customer() { }
+        public int LoyaltyPoints { get; set; } // Điểm thưởng
 
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
-
-        [StringLength(10)]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Số điện thoại phải có 10 chữ số.")]
-        public string? Phone { get; set; }
-
-        [EmailAddress]
-        public string Email { get; set; }
     }
 }

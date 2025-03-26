@@ -13,6 +13,6 @@ namespace TransferObject.TransferObject
         [StringLength(50)]
         public string Name { get; set; }
 
-        public List<Food> Foods { get; set; } = new List<Food>();
+        public virtual List<Food> Foods { get; set; } = new List<Food>();
     }
 }

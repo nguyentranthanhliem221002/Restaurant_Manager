@@ -45,5 +45,22 @@ namespace BusinessLayer.Service
         {
             return _orderRepository.GetOrdersByDate(date);
         }
+        public int SaveOrder(int tableId, int userId, List<OrderDetail> orderDetails)
+        {
+            return _orderRepository.SaveOrder(tableId,userId, orderDetails);
+        }
+
+        public IQueryable<OrderDetail> GetOrderDetailsByTableId(int tableId)
+        {
+            return _orderRepository.GetOrderDetailsByTableId(tableId);
+        }
+        public int? GetOrderIdByTableId(int tableId)
+        {
+            return _orderRepository.GetOrderIdByTableId(tableId);
+        }
+        public void DeleteOrdersByTableId(int tableId)
+        {
+            _orderRepository.DeleteOrdersByTableId(tableId);
+        }
     }
 }

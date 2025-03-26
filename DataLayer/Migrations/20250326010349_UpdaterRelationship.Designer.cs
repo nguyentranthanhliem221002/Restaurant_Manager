@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326010349_UpdaterRelationship")]
+    partial class UpdaterRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,13 +37,6 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -48,35 +44,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Accounts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PasswordHash = "$2a$11$fjleDVxjKzkdDquIptmBLeEwpX3WS7TYgrjzrRIcQuGowK9j6cntq",
-                            Role = "Admin",
-                            UserId = 1,
-                            UserName = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            PasswordHash = "$2a$11$brx067gop3rKgUlrUY9oHOD4JNrf.rWAnt9KnQEohLfQDhOLHsnTO",
-                            Role = "Staff",
-                            UserId = 2,
-                            UserName = "staff"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            PasswordHash = "$2a$11$3Bh6ReUQ7asOoi0VmaUAM.EPKIu.TdcPS15ilgPNuA9XPYv2mJzNm",
-                            Role = "Customer",
-                            UserId = 3,
-                            UserName = "customer"
-                        });
                 });
 
             modelBuilder.Entity("TransferObject.Security.User", b =>
@@ -86,6 +54,10 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -104,7 +76,9 @@ namespace DataLayer.Migrations
 
                     b.ToTable("Users");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("TransferObject.TransferObject.Category", b =>
@@ -168,20 +142,12 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<int>("TableId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TableId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -196,10 +162,6 @@ namespace DataLayer.Migrations
 
                     b.Property<int>("FoodId")
                         .HasColumnType("int");
-
-                    b.Property<string>("FoodName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -247,20 +209,7 @@ namespace DataLayer.Migrations
                 {
                     b.HasBaseType("TransferObject.Security.User");
 
-                    b.Property<int>("LoyaltyPoints")
-                        .HasColumnType("int");
-
-                    b.ToTable("Customers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            Email = "customer@example.com",
-                            Name = "Customer User",
-                            Phone = "0112233445",
-                            LoyaltyPoints = 50
-                        });
+                    b.HasDiscriminator().HasValue("Customer");
                 });
 
             modelBuilder.Entity("TransferObject.TransferObject.Employee", b =>
@@ -270,40 +219,7 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("DateOfJoining")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Employees", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@example.com",
-                            Name = "Admin User",
-                            Phone = "0123456789",
-                            DateOfJoining = new DateTime(2025, 3, 26, 14, 17, 32, 379, DateTimeKind.Utc).AddTicks(4125),
-                            Role = ""
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "staff@example.com",
-                            Name = "Staff User",
-                            Phone = "0987654321",
-                            DateOfJoining = new DateTime(2025, 3, 26, 14, 17, 32, 379, DateTimeKind.Utc).AddTicks(4127),
-                            Role = ""
-                        });
-                });
-
-            modelBuilder.Entity("TransferObject.Security.Account", b =>
-                {
-                    b.HasOne("TransferObject.Security.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("TransferObject.TransferObject.Food", b =>
@@ -325,15 +241,7 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TransferObject.Security.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Table");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TransferObject.TransferObject.OrderDetail", b =>
@@ -353,24 +261,6 @@ namespace DataLayer.Migrations
                     b.Navigation("Food");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("TransferObject.TransferObject.Customer", b =>
-                {
-                    b.HasOne("TransferObject.Security.User", null)
-                        .WithOne()
-                        .HasForeignKey("TransferObject.TransferObject.Customer", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TransferObject.TransferObject.Employee", b =>
-                {
-                    b.HasOne("TransferObject.Security.User", null)
-                        .WithOne()
-                        .HasForeignKey("TransferObject.TransferObject.Employee", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TransferObject.TransferObject.Category", b =>

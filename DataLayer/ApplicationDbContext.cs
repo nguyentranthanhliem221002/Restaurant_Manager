@@ -26,45 +26,43 @@ namespace DataLayer
 
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Thiết lập khóa chính cho bảng trung gian RolePermission
-            modelBuilder.Entity<RolePermission>()
-                .HasKey(rp => new { rp.RoleId, rp.PermissionId });
+            // Thiết lập Table Per Type (TPT)
+            modelBuilder.Entity<Employee>().ToTable("Employees");
+            modelBuilder.Entity<Customer>().ToTable("Customers");
 
-            // Thiết lập quan hệ Role - Permission (N-N)
-            modelBuilder.Entity<RolePermission>()
-                .HasOne(rp => rp.Role)
-                .WithMany(r => r.RolePermissions)
-                .HasForeignKey(rp => rp.RoleId);
+            // Cấu hình để lưu Enum Role dưới dạng chuỗi trong database
+            modelBuilder.Entity<Account>()
+                .Property(a => a.Role)
+                .HasConversion<string>(); // Chuyển đổi Enum thành string khi lưu vào DB
 
-            modelBuilder.Entity<RolePermission>()
-                .HasOne(rp => rp.Permission)
-                .WithMany()
-                .HasForeignKey(rp => rp.PermissionId);
+            // Seed dữ liệu Employee (bao gồm Admin và Staff)
+            modelBuilder.Entity<Employee>().HasData(
+                new Employee { Id = 1, Name = "Admin User", Email = "admin@example.com", Phone = "0123456789", DateOfJoining = DateTime.UtcNow },
+                new Employee { Id = 2, Name = "Staff User", Email = "staff@example.com", Phone = "0987654321", DateOfJoining = DateTime.UtcNow }
+            );
 
-            // Thiết lập khóa chính cho bảng trung gian UserRole
-            modelBuilder.Entity<UserRole>()
-                .HasKey(ur => new { ur.UserId, ur.RoleId });
+            // Seed dữ liệu Customer
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer { Id = 3, Name = "Customer User", Email = "customer@example.com", Phone = "0112233445", LoyaltyPoints = 50 }
+            );
 
-            // Thiết lập quan hệ User - Role (N-N)
-            modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId);
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.Role)
-                .WithMany()
-                .HasForeignKey(ur => ur.RoleId);
+            // Seed dữ liệu Account
+            modelBuilder.Entity<Account>().HasData(
+                new Account { Id = 1, UserName = "admin", PasswordHash = BCrypt.Net.BCrypt.HashPassword("1"), UserId = 1, Role = UserRole.Admin },
+                new Account { Id = 2, UserName = "staff", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123"), UserId = 2, Role = UserRole.Staff },
+                new Account { Id = 3, UserName = "customer", PasswordHash = BCrypt.Net.BCrypt.HashPassword("0"), UserId = 3, Role = UserRole.Customer }
+            );
         }
+
+
 
     }
 }

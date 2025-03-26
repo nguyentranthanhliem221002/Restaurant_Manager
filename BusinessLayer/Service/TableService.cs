@@ -48,7 +48,21 @@ namespace BusinessLayer.Service
             _tableRepository.SaveChanges(); // 🔹 Đảm bảo thay đổi được lưu
 
         }
-       
+        public void UpdateTableStatus(int tableId, TableStatus newStatus)
+        {
+            _tableRepository.UpdateTableStatus(tableId, newStatus);
+            _tableRepository.SaveChanges();
+        }
+
+        public TableStatus GetTableStatus(int tableId)
+        {
+            return _tableRepository.GetTableStatus(tableId);
+        }
+        public void MarkTableAsEmpty(int tableId)
+        {
+            _tableRepository.MarkTableAsEmpty(tableId); // Gọi từ Repository
+        }
+
 
     }
 }

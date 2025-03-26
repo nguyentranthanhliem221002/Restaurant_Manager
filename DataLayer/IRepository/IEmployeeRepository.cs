@@ -9,5 +9,6 @@ namespace DataLayer.IRepository
         void AddEmployee(Employee employee);
         void UpdateEmployee(Employee employee);
         void DeleteEmployee(int id);
+        List<string> GetAllRoles();
     }
 }

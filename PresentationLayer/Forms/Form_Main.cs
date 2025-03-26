@@ -10,32 +10,33 @@ namespace PresentationLayer
     public partial class frm_main : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly string _userRole;
-        private Form currentFormChild; // Form con hiện tại
+        private Form currentFormChild;
+        private  string _role;
 
-        public frm_main(IServiceProvider serviceProvider, string userRole)
+        public frm_main(IServiceProvider serviceProvider, string role)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
-            _userRole = userRole?.Trim() ?? string.Empty; // Xóa khoảng trắng & tránh lỗi null
-
-            this.Load += FrmMain_Load;
+            _role = role;
+            SetupPermissions();
+            LoadUserRole();
         }
-
-        private void FrmMain_Load(object sender, EventArgs e)
+        private void LoadUserRole()
         {
-            ApplyRolePermissions();
+            lb_roles.Text = $"Vai trò: {_role}"; // Gán giá trị vào Label lb_role
         }
-
         /// <summary>
-        /// Kiểm tra quyền dựa trên vai trò của người dùng và ẩn/hiện các button phù hợp.
+        /// Phân quyền theo Role (Admin/Staff)
         /// </summary>
-        private void ApplyRolePermissions()
+        private void SetupPermissions()
         {
-
-            bool isStaff = _userRole.Equals("User", StringComparison.OrdinalIgnoreCase);
-            btn_foods_manager.Visible = !isStaff;
-            btn_employees_manager.Visible = !isStaff;
+            if (_role == "Staff")
+            {
+                btn_employees_manager.Visible = false;  
+                btn_customers_manager.Visible = false;  
+                btn_account.Visible = false;           
+                btn_foods_manager.Visible = false;
+            }
         }
 
         /// <summary>
@@ -101,7 +102,6 @@ namespace PresentationLayer
         private void btn_account_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Chức năng tài khoản chưa được triển khai!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
         }
     }
 }
